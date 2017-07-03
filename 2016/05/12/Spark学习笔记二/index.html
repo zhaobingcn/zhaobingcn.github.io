@@ -1,0 +1,835 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Spark," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.2" />
+
+
+
+
+
+
+<meta name="description" content="本例子通过Spark sql 链接其他数据库。对数据库的信息进行操作。过滤。 首先是main 方法，创建SparkSession实例123456789101112131415def main(args: Array[String]) &amp;#123;    val sparkConf = new SparkConf().setAppName(&amp;quot;SparkSQLDemo&amp;quot;)    s">
+<meta name="keywords" content="Spark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spark学习笔记二">
+<meta property="og:url" content="http://yoursite.com/2016/05/12/Spark学习笔记二/index.html">
+<meta property="og:site_name" content="zhaobing’ bolg">
+<meta property="og:description" content="本例子通过Spark sql 链接其他数据库。对数据库的信息进行操作。过滤。 首先是main 方法，创建SparkSession实例123456789101112131415def main(args: Array[String]) &amp;#123;    val sparkConf = new SparkConf().setAppName(&amp;quot;SparkSQLDemo&amp;quot;)    s">
+<meta property="og:updated_time" content="2017-06-03T06:13:22.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Spark学习笔记二">
+<meta name="twitter:description" content="本例子通过Spark sql 链接其他数据库。对数据库的信息进行操作。过滤。 首先是main 方法，创建SparkSession实例123456789101112131415def main(args: Array[String]) &amp;#123;    val sparkConf = new SparkConf().setAppName(&amp;quot;SparkSQLDemo&amp;quot;)    s">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/05/12/Spark学习笔记二/"/>
+
+
+  <title> Spark学习笔记二 | zhaobing’ bolg </title>
+</head>
+
+<body itemscope itemtype="//schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="//schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">zhaobing’ bolg</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Spark学习笔记二
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-05-12T14:35:05+08:00" content="2016-05-12">
+              2016-05-12
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Spark/" itemprop="url" rel="index">
+                    <span itemprop="name">Spark</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/05/12/Spark学习笔记二/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/12/Spark学习笔记二/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>本例子通过Spark sql 链接其他数据库。对数据库的信息进行操作。过滤。</p>
+<h3 id="首先是main-方法，创建SparkSession实例"><a href="#首先是main-方法，创建SparkSession实例" class="headerlink" title="首先是main 方法，创建SparkSession实例"></a>首先是main 方法，创建SparkSession实例</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">def main(args: Array[String]) &#123;</div><div class="line"></div><div class="line">    val sparkConf = new SparkConf().setAppName(&quot;SparkSQLDemo&quot;)</div><div class="line">    sparkConf.setMaster(&quot;local&quot;)</div><div class="line">    val spark = SparkSession.builder().appName(&quot;SparkSQLDemo&quot;).config(sparkConf).getOrCreate()</div><div class="line">    //创建数据库连接，从数据库查询数据，并存储本地。</div><div class="line">    runJDBCDataSource(spark)</div><div class="line">    //从json文件中加载数据，进行搜索</div><div class="line">    loadDataSourceFromeJson(spark)</div><div class="line">    //从parquet文件中加载数据，进行搜索</div><div class="line">    loadDataSourceFromeParquet(spark)</div><div class="line">    从RDD中加载数据</div><div class="line">    runFromRDD(spark)</div><div class="line">    spark.stop()</div><div class="line">  &#125;</div></pre></td></tr></table></figure>
+<h3 id="runJDBCDataSource"><a href="#runJDBCDataSource" class="headerlink" title="runJDBCDataSource"></a>runJDBCDataSource</h3><p>链接数据库，操作数据，首先配置数据库连接信息。连接数据库，进行搜索，然后将数据输出到本地文件（此处我输出的文件路径相同。所以每次输出以后记得将文件改名，并将文件夹删除，要不然会报错文件路径已存在呢）<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">private def runJDBCDataSource(spark: SparkSession): Unit = &#123;</div><div class="line">    val jdbcDF = spark.read</div><div class="line">      .format(&quot;jdbc&quot;)</div><div class="line">      .option(&quot;url&quot;, &quot;jdbc:mysql://localhost:3306/msm?user=root&amp;password=admin&quot;)</div><div class="line">      //必须写表名</div><div class="line">      .option(&quot;dbtable&quot;, &quot;sec_user&quot;)</div><div class="line">      .load()</div><div class="line">    //查询数据库中的id, name, telephone三个列并以parquet（列存储）的方式存储在src/main/resources/sec_users路径下（存储后记得将名字改为user.parquet）</div><div class="line">    //jdbcDF.select(&quot;id&quot;, &quot;name&quot;, &quot;telephone&quot;).write.format(&quot;parquet&quot;).save(&quot;src/main/resources/sec_users&quot;)</div><div class="line">    //查询数据库中的username, name, telephone三个列并以parquet（列存储）的方式存储在src/main/resources/sec_users路径下存储后记得将名字改为user.json）</div><div class="line">    //jdbcDF.select(&quot;username&quot;, &quot;name&quot;, &quot;telephone&quot;).write.format(&quot;json&quot;).save(&quot;src/main/resources/sec_users&quot;)</div><div class="line"></div><div class="line">    //存储成为一张虚表user_abel</div><div class="line">    jdbcDF.select(&quot;username&quot;, &quot;name&quot;, &quot;telephone&quot;).write.mode(&quot;overwrite&quot;).saveAsTable(&quot;user_abel&quot;)</div><div class="line">    val jdbcSQl = spark.sql(&quot;select * from user_abel where name like &apos;王%&apos; &quot;)</div><div class="line">    jdbcSQl.show()</div><div class="line"></div><div class="line">    jdbcSQl.write.format(&quot;json&quot;).save(&quot;./out/resulted&quot;)</div><div class="line">  &#125;</div></pre></td></tr></table></figure></p>
+<h3 id="loadDataSourceFromeJson"><a href="#loadDataSourceFromeJson" class="headerlink" title="loadDataSourceFromeJson"></a>loadDataSourceFromeJson</h3><p>从runJDBCDataSource产生的json文件中读取数据进行处理并将结果存储。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">private def loadDataSourceFromeJson(spark: SparkSession): Unit = &#123;</div><div class="line">   //从runJDBCDataSource产生的user.json中读取数据</div><div class="line">    val jsonDF = spark.read.json(&quot;src/main/resources/user.json&quot;)</div><div class="line">    //输出结构</div><div class="line">    jsonDF.printSchema()</div><div class="line">    //创建临时视图</div><div class="line">    jsonDF.createOrReplaceTempView(&quot;user&quot;)</div><div class="line">    //从临时视图进行查询</div><div class="line">    val namesDF = spark.sql(&quot;SELECT name FROM user WHERE name like &apos;王%&apos;&quot;)</div><div class="line">    import spark.implicits._</div><div class="line">    //操作查询结果，在每个查询结果前加&quot;Name: &quot; 但使用该方法必须导入spark.implicits._</div><div class="line">    namesDF.map(attributes =&gt; &quot;Name: &quot; + attributes(0)).show()</div><div class="line">//将结果以json的形式写入到./out/resultedJSON 路径下 jsonDF.select(&quot;name&quot;).write.format(&quot;json&quot;).save(&quot;./out/resultedJSON&quot;)</div><div class="line">  &#125;</div></pre></td></tr></table></figure></p>
+<h3 id="loadDataSourceFromeParquet"><a href="#loadDataSourceFromeParquet" class="headerlink" title="loadDataSourceFromeParquet"></a>loadDataSourceFromeParquet</h3><p>从runJDBCDataSource产生的parquet(列式存储)文件中读取数据进行处理并将结果存储。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">private def loadDataSourceFromeParquet(spark: SparkSession): Unit = &#123;</div><div class="line">    //从runJDBCDataSource产生的user.json中读取数据</div><div class="line">    val parquetDF = spark.read.load(&quot;src/main/resources/user.parquet&quot;)</div><div class="line">     //创建临时视图</div><div class="line">    parquetDF.createOrReplaceTempView(&quot;user&quot;)</div><div class="line">    val namesDF = spark.sql(&quot;SELECT name FROM user WHERE id &gt; 1 &quot;)</div><div class="line">    namesDF.show()</div><div class="line">//将结果以parquet的形式写入到./out/resultedParquet 路径下</div><div class="line"> parquetDF.select(&quot;name&quot;).write.format(&quot;parquet&quot;).save(&quot;./out/resultedParquet&quot;)</div><div class="line">  &#125;</div></pre></td></tr></table></figure></p>
+<h3 id="runFromRDD"><a href="#runFromRDD" class="headerlink" title="runFromRDD"></a>runFromRDD</h3><p>从RDD中读取数据进行搜索处理。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">private def runFromRDD(spark: SparkSession): Unit = &#123;</div><div class="line">     //创建一个json形式的RDD</div><div class="line">    val otherPeopleRDD = spark.sparkContext.makeRDD(</div><div class="line">      &quot;&quot;&quot;&#123;&quot;name&quot;:&quot;Yin&quot;,&quot;address&quot;:&#123;&quot;city&quot;:&quot;Columbus&quot;,&quot;state&quot;:&quot;Ohio&quot;&#125;&#125;&quot;&quot;&quot; :: Nil)</div><div class="line">     //从RDD中读取数据</div><div class="line">    val otherPeople = spark.read.json(otherPeopleRDD)</div><div class="line">    otherPeople.show()</div><div class="line">  &#125;</div></pre></td></tr></table></figure></p>
+<h3 id="完整代码如下："><a href="#完整代码如下：" class="headerlink" title="完整代码如下："></a>完整代码如下：</h3><p> 此处我输出的文件路径相同。所以每次输出以后记得将文件改名(gai为user.json和user.parquet)，并将文件夹删除，要不然会报错文件路径已存在呢.<br> <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div></pre></td><td class="code"><pre><div class="line">import org.apache.spark.SparkConf</div><div class="line">import org.apache.spark.sql.SparkSession</div><div class="line"></div><div class="line">/**</div><div class="line">  * Created by yangyibo on 16/11/24.</div><div class="line">  */</div><div class="line">object SparkSQLDemo &#123;</div><div class="line"></div><div class="line"></div><div class="line">  def main(args: Array[String]) &#123;</div><div class="line"></div><div class="line">    val sparkConf = new SparkConf().setAppName(&quot;SparkSQLDemo&quot;)</div><div class="line">    sparkConf.setMaster(&quot;local&quot;)</div><div class="line">    val spark = SparkSession.builder().appName(&quot;SparkSQLDemo&quot;).config(sparkConf).getOrCreate()</div><div class="line">    runJDBCDataSource(spark)</div><div class="line">    loadDataSourceFromeJson(spark)</div><div class="line">    loadDataSourceFromeParquet(spark)</div><div class="line">    runFromRDD(spark)</div><div class="line">    spark.stop()</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  private def runJDBCDataSource(spark: SparkSession): Unit = &#123;</div><div class="line">    val jdbcDF = spark.read</div><div class="line">      .format(&quot;jdbc&quot;)</div><div class="line">      .option(&quot;url&quot;, &quot;jdbc:mysql://localhost:3306/msm?user=root&amp;password=admin&quot;)</div><div class="line">      .option(&quot;dbtable&quot;, &quot;sec_user&quot;) //必须写表名</div><div class="line">      .load()</div><div class="line">    //jdbcDF.select(&quot;id&quot;, &quot;name&quot;, &quot;telephone&quot;).write.format(&quot;parquet&quot;).save(&quot;src/main/resources/sec_users&quot;)</div><div class="line">    //jdbcDF.select(&quot;username&quot;, &quot;name&quot;, &quot;telephone&quot;).write.format(&quot;json&quot;).save(&quot;src/main/resources/sec_users&quot;)</div><div class="line"></div><div class="line">    //存储成为一张虚表user_abel</div><div class="line">    jdbcDF.select(&quot;username&quot;, &quot;name&quot;, &quot;telephone&quot;).write.mode(&quot;overwrite&quot;).saveAsTable(&quot;user_abel&quot;)</div><div class="line">    val jdbcSQl = spark.sql(&quot;select * from user_abel where name like &apos;王%&apos; &quot;)</div><div class="line">    jdbcSQl.show()</div><div class="line">    jdbcSQl.write.format(&quot;json&quot;).save(&quot;./out/resulted&quot;)</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  private def loadDataSourceFromeJson(spark: SparkSession): Unit = &#123;</div><div class="line">    //load 方法是加载parquet 列式存储的数据</div><div class="line">    // val jsonDF=spark.read.load(&quot;src/main/resources/sec_users/user.json&quot;)</div><div class="line">    val jsonDF = spark.read.json(&quot;src/main/resources/user.json&quot;)</div><div class="line"></div><div class="line">    jsonDF.printSchema()</div><div class="line">    //创建临时视图</div><div class="line">    jsonDF.createOrReplaceTempView(&quot;user&quot;)</div><div class="line">    val namesDF = spark.sql(&quot;SELECT name FROM user WHERE name like &apos;王%&apos;&quot;)</div><div class="line">    import spark.implicits._</div><div class="line">    namesDF.map(attributes =&gt; &quot;Name: &quot; + attributes(0)).show()</div><div class="line">    jsonDF.select(&quot;name&quot;).write.format(&quot;json&quot;).save(&quot;./out/resultedJSON&quot;)</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  private def loadDataSourceFromeParquet(spark: SparkSession): Unit = &#123;</div><div class="line"></div><div class="line">    val parquetDF = spark.read.load(&quot;src/main/resources/user.parquet&quot;)</div><div class="line">    parquetDF.createOrReplaceTempView(&quot;user&quot;)</div><div class="line">    val namesDF = spark.sql(&quot;SELECT name FROM user WHERE id &gt; 1 &quot;)</div><div class="line">    namesDF.show()</div><div class="line"></div><div class="line">    parquetDF.select(&quot;name&quot;).write.format(&quot;parquet&quot;).save(&quot;./out/resultedParquet&quot;)</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  private def runFromRDD(spark: SparkSession): Unit = &#123;</div><div class="line">    val otherPeopleRDD = spark.sparkContext.makeRDD(</div><div class="line">      &quot;&quot;&quot;&#123;&quot;name&quot;:&quot;Yin&quot;,&quot;address&quot;:&#123;&quot;city&quot;:&quot;Columbus&quot;,&quot;state&quot;:&quot;Ohio&quot;&#125;&#125;&quot;&quot;&quot; :: Nil)</div><div class="line">    val otherPeople = spark.read.json(otherPeopleRDD)</div><div class="line">    otherPeople.show()</div><div class="line">  &#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Spark/" rel="tag">#Spark</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/05/10/spark学习笔记一/" rel="next" title="spark学习笔记一">
+                <i class="fa fa-chevron-left"></i> spark学习笔记一
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/06/05/spark学习笔记三/" rel="prev" title="spark学习笔记三">
+                spark学习笔记三 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/05/12/Spark学习笔记二/"
+           data-title="Spark学习笔记二" data-url="http://yoursite.com/2016/05/12/Spark学习笔记二/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="//schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/headphoto.png"
+               alt="ZhaoBing" />
+          <p class="site-author-name" itemprop="name">ZhaoBing</p>
+          <p class="site-description motion-element" itemprop="description">天人焉有两般义，道不虚行只在人</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">17</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/zhaobingcn" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#首先是main-方法，创建SparkSession实例"><span class="nav-number">1.</span> <span class="nav-text">首先是main 方法，创建SparkSession实例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#runJDBCDataSource"><span class="nav-number">2.</span> <span class="nav-text">runJDBCDataSource</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#loadDataSourceFromeJson"><span class="nav-number">3.</span> <span class="nav-text">loadDataSourceFromeJson</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#loadDataSourceFromeParquet"><span class="nav-number">4.</span> <span class="nav-text">loadDataSourceFromeParquet</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#runFromRDD"><span class="nav-number">5.</span> <span class="nav-text">runFromRDD</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#完整代码如下："><span class="nav-number">6.</span> <span class="nav-text">完整代码如下：</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2015 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ZhaoBing</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.2"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"zhaobingcn"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+       search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="popoverlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+    'use strict';
+    $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+            // get the contents from search data
+            isfetched = true;
+            $('.popup').detach().appendTo('.header-inner');
+            var datas = $( "entry", xmlResponse ).map(function() {
+                return {
+                    title: $( "title", this ).text(),
+                    content: $("content",this).text(),
+                    url: $( "url" , this).text()
+                };
+            }).get();
+            var $input = document.getElementById(search_id);
+            var $resultContent = document.getElementById(content_id);
+            $input.addEventListener('input', function(){
+                var matchcounts = 0;
+                var str='<ul class=\"search-result-list\">';
+                var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                $resultContent.innerHTML = "";
+                if (this.value.trim().length > 1) {
+                // perform local searching
+                datas.forEach(function(data) {
+                    var isMatch = false;
+                    var content_index = [];
+                    var data_title = data.title.trim().toLowerCase();
+                    var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                    var data_url = decodeURIComponent(data.url);
+                    var index_title = -1;
+                    var index_content = -1;
+                    var first_occur = -1;
+                    // only match artiles with not empty titles and contents
+                    if(data_title != '') {
+                        keywords.forEach(function(keyword, i) {
+                            index_title = data_title.indexOf(keyword);
+                            index_content = data_content.indexOf(keyword);
+                            if( index_title >= 0 || index_content >= 0 ){
+                                isMatch = true;
+								if (i == 0) {
+                                    first_occur = index_content;
+                                }
+                            } 
+							
+                        });
+                    }
+                    // show search results
+                    if (isMatch) {
+                        matchcounts += 1;
+                        str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                        var content = data.content.trim().replace(/<[^>]+>/g,"");
+                        if (first_occur >= 0) {
+                            // cut out 100 characters
+                            var start = first_occur - 20;
+                            var end = first_occur + 80;
+                            if(start < 0){
+                                start = 0;
+                            }
+                            if(start == 0){
+                                end = 50;
+                            }
+                            if(end > content.length){
+                                end = content.length;
+                            }
+                            var match_content = content.substring(start, end);
+                            // highlight all keywords
+                            keywords.forEach(function(keyword){
+                                var regS = new RegExp(keyword, "gi");
+                                match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                            });
+
+                            str += "<p class=\"search-result\">" + match_content +"...</p>"
+                        }
+                        str += "</li>";
+                    }
+                })};
+                str += "</ul>";
+                if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+                if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+                $resultContent.innerHTML = str;
+            });
+            proceedsearch();
+        }
+    });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".popoverlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+  
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+  </script>
+
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for (i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  </script>
+  <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+  
+
+  
+
+  
+
+
+</body>
+</html>

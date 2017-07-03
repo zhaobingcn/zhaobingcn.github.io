@@ -1,0 +1,866 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Lucene," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.2" />
+
+
+
+
+
+
+<meta name="description" content="全文检索简介全文检索是将存储文件的全部内容都进行检索，也许是一本书，也许是一篇文章。他可以根据需要获得全文中的有关文章、节、段、句、词等信息，形象的表示就是给整本书的每个字词添加一个标签，以进行各种统计分析。Lucene全文检索就是基于这种应用的，Lucene采用“倒排索引”建立关键词与文件的相关映射，如下如所示：  Lucene的核心jar包 lucene-core-5.5.0.jar: 其中包">
+<meta name="keywords" content="Lucene">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Lucene学习【入门】">
+<meta property="og:url" content="http://yoursite.com/2016/11/18/lucene学习：入门/index.html">
+<meta property="og:site_name" content="zhaobing’ bolg">
+<meta property="og:description" content="全文检索简介全文检索是将存储文件的全部内容都进行检索，也许是一本书，也许是一篇文章。他可以根据需要获得全文中的有关文章、节、段、句、词等信息，形象的表示就是给整本书的每个字词添加一个标签，以进行各种统计分析。Lucene全文检索就是基于这种应用的，Lucene采用“倒排索引”建立关键词与文件的相关映射，如下如所示：  Lucene的核心jar包 lucene-core-5.5.0.jar: 其中包">
+<meta property="og:image" content="http://yoursite.com/images/lucene.png">
+<meta property="og:updated_time" content="2017-03-01T01:03:50.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Lucene学习【入门】">
+<meta name="twitter:description" content="全文检索简介全文检索是将存储文件的全部内容都进行检索，也许是一本书，也许是一篇文章。他可以根据需要获得全文中的有关文章、节、段、句、词等信息，形象的表示就是给整本书的每个字词添加一个标签，以进行各种统计分析。Lucene全文检索就是基于这种应用的，Lucene采用“倒排索引”建立关键词与文件的相关映射，如下如所示：  Lucene的核心jar包 lucene-core-5.5.0.jar: 其中包">
+<meta name="twitter:image" content="http://yoursite.com/images/lucene.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/11/18/lucene学习：入门/"/>
+
+
+  <title> Lucene学习【入门】 | zhaobing’ bolg </title>
+</head>
+
+<body itemscope itemtype="//schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="//schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">zhaobing’ bolg</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Lucene学习【入门】
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-11-18T22:16:35+08:00" content="2016-11-18">
+              2016-11-18
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Lucene/" itemprop="url" rel="index">
+                    <span itemprop="name">Lucene</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/11/18/lucene学习：入门/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/11/18/lucene学习：入门/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="全文检索简介"><a href="#全文检索简介" class="headerlink" title="全文检索简介"></a>全文检索简介</h2><p>全文检索是将存储文件的全部内容都进行检索，也许是一本书，也许是一篇文章。他可以根据需要获得全文中的有关文章、节、段、句、词等信息，形象的表示就是给整本书的每个字词添加一个标签，以进行各种统计分析。Lucene全文检索就是基于这种应用的，Lucene采用“倒排索引”建立关键词与文件的相关映射，如下如所示：</p>
+<p><img src="/images/lucene.png" alt=""></p>
+<h2 id="Lucene的核心jar包"><a href="#Lucene的核心jar包" class="headerlink" title="Lucene的核心jar包"></a>Lucene的核心jar包</h2><ul>
+<li><strong>lucene-core-5.5.0.jar</strong>: 其中包括了常用的文档，索引，搜索，存储等相关核心代码；</li>
+<li><strong>lucene-analyzers-common-5.5.0.jar</strong>: 包括了各种词法分析器，用于对文件内容关键词进行切分，提取（但是只包含英文的）；</li>
+<li><strong>lucene-queryparser-5.5.0.jar</strong>: 提取了搜索相关的代码，用于各种搜索，比如模糊搜索，范围搜索，等等</li>
+</ul>
+<h2 id="主要开发包说明"><a href="#主要开发包说明" class="headerlink" title="主要开发包说明"></a>主要开发包说明</h2><ul>
+<li><strong>org.apache.lucene.analysis</strong>：语言分析器，主要用于分词；</li>
+<li><strong>org.apache.lucene.document</strong>：索引文档的管理；</li>
+<li><strong>org.apache.lucene.index</strong>：索引管理，如增、删、改；</li>
+<li><strong>org.apache.lucene.queryparser</strong>：查询分析；</li>
+<li><strong>org.apache.lucene.search</strong>：检索管理；</li>
+<li><strong>org.apache.lucene.store</strong>：数据存储管理；</li>
+<li><strong>org.apache.lucene.util</strong>：工具包</li>
+</ul>
+<h2 id="索引操作的核心类"><a href="#索引操作的核心类" class="headerlink" title="索引操作的核心类"></a>索引操作的核心类</h2><ul>
+<li><strong>Directory</strong>: 代表索引文档的存储位置，这是一个抽象类，有两个子类FSDirectory和RAMDriectory两个主要子类。前者将索引写入文件系统，后者将索引写入内存；</li>
+<li><strong>Analyzer</strong>: 建立索引时所使用的分析器，在一个文档被索引之前对文档内容进行分词处理，主要子类有StandardAnalyzer(对汉字的分词是一个汉字一个词)。要想使用针对汉字的分析器，需要额外引入IKAnalyzer，PaodingAnalyzer等；</li>
+<li><strong>IndexWriterConfig</strong>: 操作索引库配置信息；</li>
+<li><strong>IndexWriter</strong>: 建立索引的核心类，用来操作索引(增，删，改)；</li>
+<li><strong>Document</strong>: 代表一个索引文档，这里的文档可以指一篇文章，一个HTML页面等。一个Document可以由多个Field对象组成。可以把一个Document想成数据库中的一个记录，而每个Field就是记录的一个字段；</li>
+<li><strong>Field</strong>: 代表索引文档中存储的数据，用来描述文档的某个属性，比如一封电子邮件的内容和标题可以用两个Field对象分别描述</li>
+</ul>
+<h2 id="写入索引"><a href="#写入索引" class="headerlink" title="写入索引"></a>写入索引</h2><h3 id="用maven导入依赖的jar包"><a href="#用maven导入依赖的jar包" class="headerlink" title="用maven导入依赖的jar包"></a>用maven导入依赖的jar包</h3><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">&lt;dependency&gt;</div><div class="line">  &lt;groupId&gt;org.apache.lucene&lt;/groupId&gt;</div><div class="line">  &lt;artifactId&gt;lucene-core&lt;/artifactId&gt;</div><div class="line">  &lt;version&gt;5.5.0&lt;/version&gt;</div><div class="line">&lt;/dependency&gt;</div><div class="line">&lt;dependency&gt;</div><div class="line">  &lt;groupId&gt;org.apache.lucene&lt;/groupId&gt;</div><div class="line">  &lt;artifactId&gt;lucene-analyzers-common&lt;/artifactId&gt;</div><div class="line">  &lt;version&gt;5.5.0&lt;/version&gt;</div><div class="line">&lt;/dependency&gt;</div><div class="line">&lt;dependency&gt;</div><div class="line">  &lt;groupId&gt;org.apache.lucene&lt;/groupId&gt;</div><div class="line">  &lt;artifactId&gt;lucene-queryparser&lt;/artifactId&gt;</div><div class="line">  &lt;version&gt;5.5.0&lt;/version&gt;</div><div class="line">&lt;/dependency&gt;</div></pre></td></tr></table></figure>
+<h3 id="写入索引-1"><a href="#写入索引-1" class="headerlink" title="写入索引"></a>写入索引</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//选择语言分析器</span></div><div class="line">Analyzer analyzer = <span class="keyword">new</span> StandardAnalyzer();</div><div class="line"><span class="comment">//索引文档的存储位置</span></div><div class="line">Directory directory = FSDirectory.open(Paths.get(<span class="string">"./index"</span>));</div><div class="line"><span class="comment">//配置索引库信息</span></div><div class="line">IndexWriterConfig indexWriterConfig = <span class="keyword">new</span> IndexWriterConfig(analyzer);</div><div class="line"><span class="comment">//创建IndexWriter，用来进行索引文件的写入</span></div><div class="line">IndexWriter indexWriter = <span class="keyword">new</span> IndexWriter(directory, indexWriterConfig);</div><div class="line">   <span class="comment">//准备写入Document的文档</span></div><div class="line">String[] texts = <span class="keyword">new</span> String[]&#123;</div><div class="line">        <span class="string">"Apache Lucene is a high-performance"</span>,</div><div class="line">        <span class="string">"full-featured text search engine library written entirely in Java"</span>,</div><div class="line">        <span class="string">"It is a technology suitable for nearly any application that requires full-text search."</span>,</div><div class="line">        <span class="string">"Apache Lucene is an open source project available for free download. "</span>,</div><div class="line">        <span class="string">"Please use the links on the right to access Lucene."</span></div><div class="line">&#125;;</div><div class="line"><span class="comment">//建立索引文档</span></div><div class="line"><span class="keyword">for</span>(String text: texts)&#123;</div><div class="line">    Document document = <span class="keyword">new</span> Document();</div><div class="line">    document.add(<span class="keyword">new</span> TextField(<span class="string">"info"</span>, text, Field.Store.YES));</div><div class="line">    indexWriter.addDocument(document);</div><div class="line">&#125;</div><div class="line">indexWriter.close();</div><div class="line">directory.close();</div></pre></td></tr></table></figure>
+<h2 id="查询索引的核心类"><a href="#查询索引的核心类" class="headerlink" title="查询索引的核心类"></a>查询索引的核心类</h2><ul>
+<li><strong>IndexReader</strong>: 读取索引的工具类，常见的子类有DirectoryReader；</li>
+<li><strong>IndexSeracher</strong>: 查询索引的核心类；</li>
+<li><strong>QueryPaerser</strong>: 查询分析器，表示从哪里查用哪个分析器查；</li>
+<li><strong>Query</strong>: 代表一次查询；</li>
+<li><strong>TopDocs</strong>: 封装了匹配情况,旧版本用的是Hits，新版本已经弃用；</li>
+<li><strong>ScoreDocs</strong>: 匹配情况的数据，里面封装了索引文档得分和索引ID</li>
+</ul>
+<h2 id="查询索引"><a href="#查询索引" class="headerlink" title="查询索引"></a>查询索引</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">Analyzer analyzer = <span class="keyword">new</span> StandardAnalyzer();</div><div class="line">Directory directory = FSDirectory.open(Paths.get(<span class="string">"./index"</span>));</div><div class="line"><span class="comment">//建立IndexReader</span></div><div class="line">IndexReader reader = DirectoryReader.open(directory);</div><div class="line">IndexSearcher indexSearcher = <span class="keyword">new</span> IndexSearcher(reader);</div><div class="line">QueryParser queryParser = <span class="keyword">new</span> QueryParser(<span class="string">"info"</span>, analyzer);</div><div class="line">Query query = queryParser.parse(<span class="string">"lucene"</span>);</div><div class="line">TopDocs topDocs = indexSearcher.search(query, <span class="number">1000</span>);</div><div class="line">System.out.println(<span class="string">"总共匹配多少个："</span> + topDocs.totalHits);</div><div class="line">ScoreDoc[] hits = topDocs.scoreDocs;</div><div class="line">System.out.println(<span class="string">"总共多少条数据："</span> + hits.length);</div><div class="line"><span class="keyword">for</span>(ScoreDoc hit: hits)&#123;</div><div class="line">    System.out.println(<span class="string">"匹配的分："</span> + hit.score);</div><div class="line">    System.out.println(<span class="string">"文档索引id："</span> + hit.doc);</div><div class="line">    Document document = indexSearcher.doc(hit.doc);</div><div class="line">    System.out.println(document.get(<span class="string">"info"</span>));</div><div class="line">&#125;</div><div class="line">reader.close();</div><div class="line">directory.close();</div></pre></td></tr></table></figure>
+<p>以上就是两个简单的全文索引建立和查找的例子，但是已经涵盖了主要的思想。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Lucene/" rel="tag">#Lucene</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/11/12/Neo4j批量导入数据BatchInserter/" rel="next" title="Neo4j批量导入数据BatchInserter">
+                <i class="fa fa-chevron-left"></i> Neo4j批量导入数据BatchInserter
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/12/09/Neo4j集群搭建/" rel="prev" title="Neo4j集群搭建">
+                Neo4j集群搭建 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/11/18/lucene学习：入门/"
+           data-title="Lucene学习【入门】" data-url="http://yoursite.com/2016/11/18/lucene学习：入门/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="//schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/headphoto.png"
+               alt="ZhaoBing" />
+          <p class="site-author-name" itemprop="name">ZhaoBing</p>
+          <p class="site-description motion-element" itemprop="description">天人焉有两般义，道不虚行只在人</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">17</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/zhaobingcn" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#全文检索简介"><span class="nav-number">1.</span> <span class="nav-text">全文检索简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Lucene的核心jar包"><span class="nav-number">2.</span> <span class="nav-text">Lucene的核心jar包</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#主要开发包说明"><span class="nav-number">3.</span> <span class="nav-text">主要开发包说明</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#索引操作的核心类"><span class="nav-number">4.</span> <span class="nav-text">索引操作的核心类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#写入索引"><span class="nav-number">5.</span> <span class="nav-text">写入索引</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#用maven导入依赖的jar包"><span class="nav-number">5.1.</span> <span class="nav-text">用maven导入依赖的jar包</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#写入索引-1"><span class="nav-number">5.2.</span> <span class="nav-text">写入索引</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#查询索引的核心类"><span class="nav-number">6.</span> <span class="nav-text">查询索引的核心类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#查询索引"><span class="nav-number">7.</span> <span class="nav-text">查询索引</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2015 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ZhaoBing</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.2"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"zhaobingcn"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+       search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="popoverlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+    'use strict';
+    $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+            // get the contents from search data
+            isfetched = true;
+            $('.popup').detach().appendTo('.header-inner');
+            var datas = $( "entry", xmlResponse ).map(function() {
+                return {
+                    title: $( "title", this ).text(),
+                    content: $("content",this).text(),
+                    url: $( "url" , this).text()
+                };
+            }).get();
+            var $input = document.getElementById(search_id);
+            var $resultContent = document.getElementById(content_id);
+            $input.addEventListener('input', function(){
+                var matchcounts = 0;
+                var str='<ul class=\"search-result-list\">';
+                var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                $resultContent.innerHTML = "";
+                if (this.value.trim().length > 1) {
+                // perform local searching
+                datas.forEach(function(data) {
+                    var isMatch = false;
+                    var content_index = [];
+                    var data_title = data.title.trim().toLowerCase();
+                    var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                    var data_url = decodeURIComponent(data.url);
+                    var index_title = -1;
+                    var index_content = -1;
+                    var first_occur = -1;
+                    // only match artiles with not empty titles and contents
+                    if(data_title != '') {
+                        keywords.forEach(function(keyword, i) {
+                            index_title = data_title.indexOf(keyword);
+                            index_content = data_content.indexOf(keyword);
+                            if( index_title >= 0 || index_content >= 0 ){
+                                isMatch = true;
+								if (i == 0) {
+                                    first_occur = index_content;
+                                }
+                            } 
+							
+                        });
+                    }
+                    // show search results
+                    if (isMatch) {
+                        matchcounts += 1;
+                        str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                        var content = data.content.trim().replace(/<[^>]+>/g,"");
+                        if (first_occur >= 0) {
+                            // cut out 100 characters
+                            var start = first_occur - 20;
+                            var end = first_occur + 80;
+                            if(start < 0){
+                                start = 0;
+                            }
+                            if(start == 0){
+                                end = 50;
+                            }
+                            if(end > content.length){
+                                end = content.length;
+                            }
+                            var match_content = content.substring(start, end);
+                            // highlight all keywords
+                            keywords.forEach(function(keyword){
+                                var regS = new RegExp(keyword, "gi");
+                                match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                            });
+
+                            str += "<p class=\"search-result\">" + match_content +"...</p>"
+                        }
+                        str += "</li>";
+                    }
+                })};
+                str += "</ul>";
+                if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+                if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+                $resultContent.innerHTML = str;
+            });
+            proceedsearch();
+        }
+    });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".popoverlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+  
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+  </script>
+
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for (i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  </script>
+  <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+  
+
+  
+
+  
+
+
+</body>
+</html>

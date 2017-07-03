@@ -1,0 +1,830 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Spark," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.2" />
+
+
+
+
+
+
+<meta name="description" content="本例子是我初尝 Spark 的sparkStreaming官方小例子修改的。 我的思路是使用jdbc 链接数据库，然后查询数据库，将查询结果生成一个RDD ，放入RDD queue，然后每次取出rdd 进行计算和过滤处理。 1.sparkStreamingDemo由于这个demo需要spark 和jdbc 的依赖包。在pom.xml文件中如下（关于新建maven 的spark工程请参考idea 构">
+<meta name="keywords" content="Spark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="spark学习笔记一">
+<meta property="og:url" content="http://yoursite.com/2016/05/10/spark学习笔记一/index.html">
+<meta property="og:site_name" content="zhaobing’ bolg">
+<meta property="og:description" content="本例子是我初尝 Spark 的sparkStreaming官方小例子修改的。 我的思路是使用jdbc 链接数据库，然后查询数据库，将查询结果生成一个RDD ，放入RDD queue，然后每次取出rdd 进行计算和过滤处理。 1.sparkStreamingDemo由于这个demo需要spark 和jdbc 的依赖包。在pom.xml文件中如下（关于新建maven 的spark工程请参考idea 构">
+<meta property="og:updated_time" content="2017-06-03T06:13:22.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="spark学习笔记一">
+<meta name="twitter:description" content="本例子是我初尝 Spark 的sparkStreaming官方小例子修改的。 我的思路是使用jdbc 链接数据库，然后查询数据库，将查询结果生成一个RDD ，放入RDD queue，然后每次取出rdd 进行计算和过滤处理。 1.sparkStreamingDemo由于这个demo需要spark 和jdbc 的依赖包。在pom.xml文件中如下（关于新建maven 的spark工程请参考idea 构">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/05/10/spark学习笔记一/"/>
+
+
+  <title> spark学习笔记一 | zhaobing’ bolg </title>
+</head>
+
+<body itemscope itemtype="//schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="//schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">zhaobing’ bolg</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                spark学习笔记一
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-05-10T12:23:57+08:00" content="2016-05-10">
+              2016-05-10
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Spark/" itemprop="url" rel="index">
+                    <span itemprop="name">Spark</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/05/10/spark学习笔记一/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/10/spark学习笔记一/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>本例子是我初尝 Spark 的sparkStreaming官方小例子修改的。</p>
+<p>我的思路是使用jdbc 链接数据库，然后查询数据库，将查询结果生成一个RDD ，放入RDD queue，然后每次取出rdd 进行计算和过滤处理。</p>
+<h2 id="1-sparkStreamingDemo"><a href="#1-sparkStreamingDemo" class="headerlink" title="1.sparkStreamingDemo"></a>1.sparkStreamingDemo</h2><p>由于这个demo需要spark 和jdbc 的依赖包。在pom.xml文件中如下（关于新建maven 的spark工程请参考idea 构建maven 管理的spark项目）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</div><div class="line">&lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot;</div><div class="line">         xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</div><div class="line">         xsi:schemaLocation=&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd&quot;&gt;</div><div class="line">    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;</div><div class="line"></div><div class="line">    &lt;groupId&gt;com.us.demo&lt;/groupId&gt;</div><div class="line">    &lt;artifactId&gt;mySpark&lt;/artifactId&gt;</div><div class="line">    &lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;</div><div class="line"></div><div class="line">    &lt;properties&gt;</div><div class="line">        &lt;spark.version&gt;2.0.2&lt;/spark.version&gt;</div><div class="line">        &lt;scala.version&gt;2.11&lt;/scala.version&gt;</div><div class="line">    &lt;/properties&gt;</div><div class="line"></div><div class="line"></div><div class="line">    &lt;dependencies&gt;</div><div class="line">        &lt;dependency&gt;</div><div class="line">            &lt;groupId&gt;org.apache.spark&lt;/groupId&gt;</div><div class="line">            &lt;artifactId&gt;spark-core_$&#123;scala.version&#125;&lt;/artifactId&gt;</div><div class="line">            &lt;version&gt;$&#123;spark.version&#125;&lt;/version&gt;</div><div class="line">        &lt;/dependency&gt;</div><div class="line">        &lt;dependency&gt;</div><div class="line">            &lt;groupId&gt;org.apache.spark&lt;/groupId&gt;</div><div class="line">            &lt;artifactId&gt;spark-streaming_$&#123;scala.version&#125;&lt;/artifactId&gt;</div><div class="line">            &lt;version&gt;$&#123;spark.version&#125;&lt;/version&gt;</div><div class="line">        &lt;/dependency&gt;</div><div class="line">        &lt;dependency&gt;</div><div class="line">            &lt;groupId&gt;org.apache.spark&lt;/groupId&gt;</div><div class="line">            &lt;artifactId&gt;spark-sql_$&#123;scala.version&#125;&lt;/artifactId&gt;</div><div class="line">            &lt;version&gt;$&#123;spark.version&#125;&lt;/version&gt;</div><div class="line">        &lt;/dependency&gt;</div><div class="line">        &lt;dependency&gt;</div><div class="line">            &lt;groupId&gt;org.apache.spark&lt;/groupId&gt;</div><div class="line">            &lt;artifactId&gt;spark-hive_$&#123;scala.version&#125;&lt;/artifactId&gt;</div><div class="line">            &lt;version&gt;$&#123;spark.version&#125;&lt;/version&gt;</div><div class="line">        &lt;/dependency&gt;</div><div class="line">        &lt;dependency&gt;</div><div class="line">            &lt;groupId&gt;org.apache.spark&lt;/groupId&gt;</div><div class="line">            &lt;artifactId&gt;spark-mllib_$&#123;scala.version&#125;&lt;/artifactId&gt;</div><div class="line">            &lt;version&gt;$&#123;spark.version&#125;&lt;/version&gt;</div><div class="line">        &lt;/dependency&gt;</div><div class="line"></div><div class="line">        &lt;!-- JDBC--&gt;</div><div class="line"></div><div class="line">        &lt;dependency&gt;</div><div class="line">            &lt;groupId&gt;mysql&lt;/groupId&gt;</div><div class="line">            &lt;artifactId&gt;mysql-connector-java&lt;/artifactId&gt;</div><div class="line">            &lt;version&gt;5.1.12&lt;/version&gt;</div><div class="line">        &lt;/dependency&gt;</div><div class="line"></div><div class="line">    &lt;/dependencies&gt;</div><div class="line"></div><div class="line">    &lt;build&gt;</div><div class="line">        &lt;plugins&gt;</div><div class="line"></div><div class="line">            &lt;plugin&gt;</div><div class="line">                &lt;groupId&gt;org.scala-tools&lt;/groupId&gt;</div><div class="line">                &lt;artifactId&gt;maven-scala-plugin&lt;/artifactId&gt;</div><div class="line">                &lt;version&gt;2.15.2&lt;/version&gt;</div><div class="line">                &lt;executions&gt;</div><div class="line">                    &lt;execution&gt;</div><div class="line">                        &lt;goals&gt;</div><div class="line">                            &lt;goal&gt;compile&lt;/goal&gt;</div><div class="line">                            &lt;goal&gt;testCompile&lt;/goal&gt;</div><div class="line">                        &lt;/goals&gt;</div><div class="line">                    &lt;/execution&gt;</div><div class="line">                &lt;/executions&gt;</div><div class="line">            &lt;/plugin&gt;</div><div class="line"></div><div class="line">            &lt;plugin&gt;</div><div class="line">                &lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;</div><div class="line">                &lt;version&gt;3.6.0&lt;/version&gt;</div><div class="line">                &lt;configuration&gt;</div><div class="line">                    &lt;source&gt;1.8&lt;/source&gt;</div><div class="line">                    &lt;target&gt;1.8&lt;/target&gt;</div><div class="line">                &lt;/configuration&gt;</div><div class="line">            &lt;/plugin&gt;</div><div class="line"></div><div class="line">            &lt;plugin&gt;</div><div class="line">                &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;</div><div class="line">                &lt;artifactId&gt;maven-surefire-plugin&lt;/artifactId&gt;</div><div class="line">                &lt;version&gt;2.19&lt;/version&gt;</div><div class="line">                &lt;configuration&gt;</div><div class="line">                    &lt;skip&gt;true&lt;/skip&gt;</div><div class="line">                &lt;/configuration&gt;</div><div class="line">            &lt;/plugin&gt;</div><div class="line"></div><div class="line">        &lt;/plugins&gt;</div><div class="line">    &lt;/build&gt;</div><div class="line"></div><div class="line">&lt;/project&gt;</div></pre></td></tr></table></figure>
+<p>SparkStreamingDemo demo 的代码如下，我会尽量逐行增加注释：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div></pre></td><td class="code"><pre><div class="line">import java.sql.&#123;DriverManager, ResultSet&#125;</div><div class="line"></div><div class="line">import scala.collection.mutable.Queue</div><div class="line">import org.apache.spark.&#123;SparkConf, SparkContext&#125;</div><div class="line">import org.apache.spark.rdd.RDD</div><div class="line">import org.apache.spark.streaming.&#123;Seconds, StreamingContext&#125;</div><div class="line"></div><div class="line">/**</div><div class="line">  * Created by yangyibo on 16/11/23.</div><div class="line">  */</div><div class="line">object SparkStreamingDemo &#123;</div><div class="line">  def main(args: Array[String]) &#123;</div><div class="line"></div><div class="line">    //创建spark实例</div><div class="line">    val sparkConf = new SparkConf().setAppName(&quot;QueueStream&quot;)</div><div class="line">    sparkConf.setMaster(&quot;local&quot;)</div><div class="line">    // 创建sparkStreamingContext ，Seconds是多久去Rdd中取一次数据。</div><div class="line">    val ssc = new StreamingContext(sparkConf, Seconds(3))</div><div class="line"></div><div class="line">    // Create the queue through which RDDs can be pushed to a QueueInputDStream</div><div class="line">    var rddQueue = new Queue[RDD[String]]()</div><div class="line">    // 从rdd队列中读取输入流</div><div class="line">    val inputStream = ssc.queueStream(rddQueue)</div><div class="line">    //将输入流中的每个元素（每个元素都是一个String）后面添加一个“a“字符，并返回一个新的rdd。</div><div class="line">    val mappedStream = inputStream.map(x =&gt; (x + &quot;a&quot;, 1))</div><div class="line">    //reduceByKey(_ + _)对每个元素统计次数。map(x =&gt; (x._2,x._1))是将map的key和value 交换位置。后边是过滤次数超过1次的且String 相等于“testa“</div><div class="line">    val reducedStream = mappedStream.reduceByKey(_ + _)</div><div class="line">        .map(x =&gt; (x._2,x._1)).filter((x)=&gt;x._1&gt;1).filter((x)=&gt;x._2.equals(&quot;testa&quot;))</div><div class="line">    reducedStream.print()</div><div class="line">    //将每次计算的结果存储在./out/resulted处。</div><div class="line">    reducedStream.saveAsTextFiles(&quot;./out/resulted&quot;)</div><div class="line">    ssc.start()</div><div class="line"></div><div class="line">    //从数据库中查出每个用户的姓名，返回的是一个String有序队列seq，因为生成RDD的对象必须是seq。</div><div class="line">    val seq = conn()</div><div class="line">    println(Seq)</div><div class="line">     //将seq生成RDD然后放入Spark的Streaming的RDD队列，作为输入流。</div><div class="line">    for (i &lt;- 1 to 3) &#123;</div><div class="line"></div><div class="line">      rddQueue.synchronized &#123;</div><div class="line">        rddQueue += ssc.sparkContext.makeRDD(seq,10)</div><div class="line">      &#125;</div><div class="line">      Thread.sleep(3000)</div><div class="line">    &#125;</div><div class="line">    ssc.stop()</div><div class="line">  &#125;</div><div class="line"></div><div class="line"></div><div class="line">//从数据库中取出每个用户的名字，是个String有序队列</div><div class="line">  def conn(): Seq[String] = &#123;</div><div class="line">    val user = &quot;root&quot;</div><div class="line">    val password = &quot;admin&quot;</div><div class="line">    val host = &quot;localhost&quot;</div><div class="line">    val database = &quot;msm&quot;</div><div class="line">    val conn_str = &quot;jdbc:mysql://&quot; + host + &quot;:3306/&quot; + database + &quot;?user=&quot; + user + &quot;&amp;password=&quot; + password</div><div class="line">    //classOf[com.mysql.jdbc.Driver]</div><div class="line">    Class.forName(&quot;com.mysql.jdbc.Driver&quot;).newInstance();</div><div class="line">    val conn = DriverManager.getConnection(conn_str)</div><div class="line">    var setName = Seq(&quot;&quot;)</div><div class="line">    try &#123;</div><div class="line">      // Configure to be Read Only</div><div class="line">      val statement = conn.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY)</div><div class="line"></div><div class="line">      // Execute Query，查询用户表 sec_user 是我的用户表，有name属性。</div><div class="line">      val rs = statement.executeQuery(&quot;select * from sec_user&quot;)</div><div class="line">      // Iterate Over ResultSet</div><div class="line"></div><div class="line">      while (rs.next) &#123;</div><div class="line">        // 返回行号</div><div class="line">        // println(rs.getRow)</div><div class="line">        val name = rs.getString(&quot;name&quot;)</div><div class="line">        setName = setName :+ name</div><div class="line">      &#125;</div><div class="line">      return setName</div><div class="line">    &#125;</div><div class="line">    finally &#123;</div><div class="line">      conn.close</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h2 id="2-scala-链接mysql"><a href="#2-scala-链接mysql" class="headerlink" title="2.scala 链接mysql"></a>2.scala 链接mysql</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div></pre></td><td class="code"><pre><div class="line">import java.sql.&#123;Connection, DriverManager, ResultSet&#125;</div><div class="line"></div><div class="line">/**</div><div class="line">  * Created by yangyibo on 16/11/23.</div><div class="line">  */</div><div class="line">object DB &#123;</div><div class="line"></div><div class="line">  def main(args: Array[String]) &#123;</div><div class="line">    val user = &quot;root&quot;</div><div class="line">    val password = &quot;admin&quot;</div><div class="line">    val host = &quot;localhost&quot;</div><div class="line">    val database = &quot;msm&quot;</div><div class="line">    val conn_str = &quot;jdbc:mysql://&quot; + host + &quot;:3306/&quot; + database + &quot;?user=&quot; + user + &quot;&amp;password=&quot; + password</div><div class="line">    println(conn_str)</div><div class="line">    val conn = connect(conn_str)</div><div class="line">    val statement =conn.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);</div><div class="line">    // Execute Query</div><div class="line">    val rs = statement.executeQuery(&quot;select * from sec_user&quot;)</div><div class="line">    // Iterate Over ResultSet</div><div class="line">    while (rs.next) &#123;</div><div class="line">      // 返回行号</div><div class="line">      // println(rs.getRow)</div><div class="line">      val name = rs.getString(&quot;name&quot;)</div><div class="line">      println(name)</div><div class="line">    &#125;</div><div class="line">    closeConn(conn)</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  def connect(conn_str: String): Connection = &#123;</div><div class="line">    //classOf[com.mysql.jdbc.Driver]</div><div class="line">    Class.forName(&quot;com.mysql.jdbc.Driver&quot;).newInstance();</div><div class="line">    return  DriverManager.getConnection(conn_str)</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  def closeConn(conn:Connection): Unit =&#123;</div><div class="line">    conn.close()</div><div class="line">  &#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="scala-链接MySQL所需依赖"><a href="#scala-链接MySQL所需依赖" class="headerlink" title="scala 链接MySQL所需依赖"></a>scala 链接MySQL所需依赖</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">&lt;!-- JDBC--&gt;</div><div class="line"></div><div class="line">&lt;dependency&gt;</div><div class="line">    &lt;groupId&gt;mysql&lt;/groupId&gt;</div><div class="line">    &lt;artifactId&gt;mysql-connector-java&lt;/artifactId&gt;</div><div class="line">    &lt;version&gt;5.1.12&lt;/version&gt;</div><div class="line">&lt;/dependency&gt;</div></pre></td></tr></table></figure>
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Spark/" rel="tag">#Spark</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/05/12/Spark学习笔记二/" rel="prev" title="Spark学习笔记二">
+                Spark学习笔记二 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/05/10/spark学习笔记一/"
+           data-title="spark学习笔记一" data-url="http://yoursite.com/2016/05/10/spark学习笔记一/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="//schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/headphoto.png"
+               alt="ZhaoBing" />
+          <p class="site-author-name" itemprop="name">ZhaoBing</p>
+          <p class="site-description motion-element" itemprop="description">天人焉有两般义，道不虚行只在人</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">17</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/zhaobingcn" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-sparkStreamingDemo"><span class="nav-number">1.</span> <span class="nav-text">1.sparkStreamingDemo</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-scala-链接mysql"><span class="nav-number">2.</span> <span class="nav-text">2.scala 链接mysql</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#scala-链接MySQL所需依赖"><span class="nav-number">2.1.</span> <span class="nav-text">scala 链接MySQL所需依赖</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2015 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ZhaoBing</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.2"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"zhaobingcn"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+       search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="popoverlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+    'use strict';
+    $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+            // get the contents from search data
+            isfetched = true;
+            $('.popup').detach().appendTo('.header-inner');
+            var datas = $( "entry", xmlResponse ).map(function() {
+                return {
+                    title: $( "title", this ).text(),
+                    content: $("content",this).text(),
+                    url: $( "url" , this).text()
+                };
+            }).get();
+            var $input = document.getElementById(search_id);
+            var $resultContent = document.getElementById(content_id);
+            $input.addEventListener('input', function(){
+                var matchcounts = 0;
+                var str='<ul class=\"search-result-list\">';
+                var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                $resultContent.innerHTML = "";
+                if (this.value.trim().length > 1) {
+                // perform local searching
+                datas.forEach(function(data) {
+                    var isMatch = false;
+                    var content_index = [];
+                    var data_title = data.title.trim().toLowerCase();
+                    var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                    var data_url = decodeURIComponent(data.url);
+                    var index_title = -1;
+                    var index_content = -1;
+                    var first_occur = -1;
+                    // only match artiles with not empty titles and contents
+                    if(data_title != '') {
+                        keywords.forEach(function(keyword, i) {
+                            index_title = data_title.indexOf(keyword);
+                            index_content = data_content.indexOf(keyword);
+                            if( index_title >= 0 || index_content >= 0 ){
+                                isMatch = true;
+								if (i == 0) {
+                                    first_occur = index_content;
+                                }
+                            } 
+							
+                        });
+                    }
+                    // show search results
+                    if (isMatch) {
+                        matchcounts += 1;
+                        str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                        var content = data.content.trim().replace(/<[^>]+>/g,"");
+                        if (first_occur >= 0) {
+                            // cut out 100 characters
+                            var start = first_occur - 20;
+                            var end = first_occur + 80;
+                            if(start < 0){
+                                start = 0;
+                            }
+                            if(start == 0){
+                                end = 50;
+                            }
+                            if(end > content.length){
+                                end = content.length;
+                            }
+                            var match_content = content.substring(start, end);
+                            // highlight all keywords
+                            keywords.forEach(function(keyword){
+                                var regS = new RegExp(keyword, "gi");
+                                match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                            });
+
+                            str += "<p class=\"search-result\">" + match_content +"...</p>"
+                        }
+                        str += "</li>";
+                    }
+                })};
+                str += "</ul>";
+                if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+                if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+                $resultContent.innerHTML = str;
+            });
+            proceedsearch();
+        }
+    });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".popoverlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+  
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+  </script>
+
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for (i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  </script>
+  <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+  
+
+  
+
+  
+
+
+</body>
+</html>

@@ -1,0 +1,922 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Linux,shell," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.2" />
+
+
+
+
+
+
+<meta name="description" content="文件操作命令rm命令mkdir命令touch命令cp命令mv命令cd命令tar命令ls命令文本操作命令vi命令vim命令cat命令cat命令主要用来查看文件内容，创建文件，文件合并，追加文件内容等功能。 查看文件内容主要用法：  cat f1.txt，查看f1.txt文件的内容。 cat -n f1.txt，查看f1.txt文件的内容，并且由1开始对所有输出行进行编号。 cat -b f1.txt">
+<meta name="keywords" content="Linux,shell">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux常用命令小结">
+<meta property="og:url" content="http://yoursite.com/2016/10/08/Linux查用命令小结/index.html">
+<meta property="og:site_name" content="zhaobing’ bolg">
+<meta property="og:description" content="文件操作命令rm命令mkdir命令touch命令cp命令mv命令cd命令tar命令ls命令文本操作命令vi命令vim命令cat命令cat命令主要用来查看文件内容，创建文件，文件合并，追加文件内容等功能。 查看文件内容主要用法：  cat f1.txt，查看f1.txt文件的内容。 cat -n f1.txt，查看f1.txt文件的内容，并且由1开始对所有输出行进行编号。 cat -b f1.txt">
+<meta property="og:updated_time" content="2017-06-06T03:42:43.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Linux常用命令小结">
+<meta name="twitter:description" content="文件操作命令rm命令mkdir命令touch命令cp命令mv命令cd命令tar命令ls命令文本操作命令vi命令vim命令cat命令cat命令主要用来查看文件内容，创建文件，文件合并，追加文件内容等功能。 查看文件内容主要用法：  cat f1.txt，查看f1.txt文件的内容。 cat -n f1.txt，查看f1.txt文件的内容，并且由1开始对所有输出行进行编号。 cat -b f1.txt">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/10/08/Linux查用命令小结/"/>
+
+
+  <title> Linux常用命令小结 | zhaobing’ bolg </title>
+</head>
+
+<body itemscope itemtype="//schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="//schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">zhaobing’ bolg</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Linux常用命令小结
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-10-08T22:16:35+08:00" content="2016-10-08">
+              2016-10-08
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Linux/" itemprop="url" rel="index">
+                    <span itemprop="name">Linux</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/10/08/Linux查用命令小结/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/10/08/Linux查用命令小结/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="文件操作命令"><a href="#文件操作命令" class="headerlink" title="文件操作命令"></a>文件操作命令</h2><h3 id="rm命令"><a href="#rm命令" class="headerlink" title="rm命令"></a>rm命令</h3><h3 id="mkdir命令"><a href="#mkdir命令" class="headerlink" title="mkdir命令"></a>mkdir命令</h3><h3 id="touch命令"><a href="#touch命令" class="headerlink" title="touch命令"></a>touch命令</h3><h3 id="cp命令"><a href="#cp命令" class="headerlink" title="cp命令"></a>cp命令</h3><h3 id="mv命令"><a href="#mv命令" class="headerlink" title="mv命令"></a>mv命令</h3><h3 id="cd命令"><a href="#cd命令" class="headerlink" title="cd命令"></a>cd命令</h3><h3 id="tar命令"><a href="#tar命令" class="headerlink" title="tar命令"></a>tar命令</h3><h3 id="ls命令"><a href="#ls命令" class="headerlink" title="ls命令"></a>ls命令</h3><h2 id="文本操作命令"><a href="#文本操作命令" class="headerlink" title="文本操作命令"></a>文本操作命令</h2><h3 id="vi命令"><a href="#vi命令" class="headerlink" title="vi命令"></a>vi命令</h3><h3 id="vim命令"><a href="#vim命令" class="headerlink" title="vim命令"></a>vim命令</h3><h3 id="cat命令"><a href="#cat命令" class="headerlink" title="cat命令"></a>cat命令</h3><p>cat命令主要用来查看文件内容，创建文件，文件合并，追加文件内容等功能。</p>
+<p>查看文件内容主要用法：</p>
+<ul>
+<li>cat f1.txt，查看f1.txt文件的内容。</li>
+<li>cat -n f1.txt，查看f1.txt文件的内容，并且由1开始对所有输出行进行编号。</li>
+<li>cat -b f1.txt，查看f1.txt文件的内容，用法与-n相似，只不过对于空白行不编号。</li>
+<li>cat -s f1.txt，当遇到有连续两行或两行以上的空白行，就代换为一行的空白行。</li>
+<li>cat -e f1.txt，在输出内容的每一行后面加一个$符号。</li>
+<li>cat f1.txt f2.txt，同时显示f1.txt和f2.txt文件内容，注意文件名之间以空格分隔，而不是逗号。</li>
+<li>cat -n f1.txt&gt;f2.txt，对f1.txt文件中每一行加上行号后然后写入到f2.txt中，会覆盖原来的内容，文件不存在则创建它。</li>
+<li>cat -n f1.txt&gt;&gt;f2.txt，对f1.txt文件中每一行加上行号后然后追加到f2.txt中去，不会覆盖原来的内容，文件不存在则创建它。</li>
+</ul>
+<h3 id="sort命令"><a href="#sort命令" class="headerlink" title="sort命令"></a>sort命令</h3><p>sort主要用来对File参数指定的文件中的行排序，并将结果写到标准输出。如果File参数指定多个文件，那么sort命令<br>将这些参数连接起来，当做一个文件进行排序。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">[root@www ~]# sort [-fbMnrtuk] [file or stdin]</div><div class="line">选项与参数：</div><div class="line"> -f  ：忽略大小写的差异，例如 A 与 a 视为编码相同；</div><div class="line"> -b  ：忽略最前面的空格符部分；</div><div class="line"> -M  ：以月份的名字来排序，例如 JAN, DEC 等等的排序方法；</div><div class="line"> -n  ：使用『纯数字』进行排序(默认是以文字型态来排序的)；</div><div class="line"> -r  ：反向排序；</div><div class="line"> -u  ：就是 uniq ，相同的数据中，仅出现一行代表；</div><div class="line"> -t  ：分隔符，默认是用 [tab] 键来分隔；</div><div class="line"> -k  ：以那个区间 (field) 来进行排序的意思</div></pre></td></tr></table></figure>
+<p><strong>对/etc/passwd 的账号进行排序</strong></p>
+<p>root@ubuntu-03:~# cat /etc/passwd | sort</p>
+<p>sort 是默认以第一个数据来排序，而且默认是以字符串形式来排序,所以由字母 a 开始升序排序。</p>
+<p><strong>/etc/passwd 内容是以 : 来分隔的，我想以第三栏来排序，该如何</strong></p>
+<p>root@ubuntu-03:~# cat /etc/passwd | sort -t “:” -k 3</p>
+<p><strong>默认是以字符串来排序的，如果想要使用数字排序：</strong></p>
+<p>root@ubuntu-03:~# cat /etc/passwd | sort -t “:” -k 3n</p>
+<p><strong>默认是升序排序，如果要倒序排序，如下</strong></p>
+<p>root@ubuntu-03:~# cat /etc/passwd | sort -t ‘:’ -k 3nr</p>
+<h3 id="uniq命令"><a href="#uniq命令" class="headerlink" title="uniq命令"></a>uniq命令</h3><p>uniq命令可以去除排序过的文件中的重复行，因此uniq经常和sort合用。也就是说，为了使uniq起作用，所有的重复行必须是相邻的。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">[root@www ~]# uniq [-icu]</div><div class="line">选项与参数：</div><div class="line">-i  ：忽略大小写字符的不同；</div><div class="line">-c  ：进行计数</div><div class="line">-u  ：只显示唯一的行</div></pre></td></tr></table></figure></p>
+<p>假设testfile内容如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">cat testfile</div><div class="line">hello</div><div class="line">world</div><div class="line">friend</div><div class="line">hello</div><div class="line">world</div><div class="line">hello</div></pre></td></tr></table></figure>
+<p>直接删除未经排序的文件，将会发现没有任何行被删除<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">#uniq testfile</div><div class="line">hello</div><div class="line">world</div><div class="line">friend</div><div class="line">hello</div><div class="line">world</div><div class="line">hello</div></pre></td></tr></table></figure></p>
+<p><strong>排序文件，默认去重</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">#cat words | sort |uniq</div><div class="line">friend</div><div class="line">hello</div><div class="line">world</div></pre></td></tr></table></figure></p>
+<p><strong>排序之后删除了重复行，同时在行首位置输出该行重复的次数</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">#sort testfile | uniq -c</div><div class="line">1 friend</div><div class="line">3 hello</div><div class="line">2 world</div></pre></td></tr></table></figure></p>
+<h3 id="cut命令"><a href="#cut命令" class="headerlink" title="cut命令"></a>cut命令</h3><p>cut命令可以从一个文本文件或者文本流中提取文本列。</p>
+<p><strong>cut语法：</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">[root@www ~]# cut -d&apos;分隔字符&apos; -f fields &lt;==用于有特定分隔字符</div><div class="line">[root@www ~]# cut -c 字符区间            &lt;==用于排列整齐的信息</div><div class="line">选项与参数：</div><div class="line">-d  ：后面接分隔字符。与 -f 一起使用；</div><div class="line">-f  ：依据 -d 的分隔字符将一段信息分割成为数段，用 -f 取出第几段的意思；</div><div class="line">-c  ：以字符 (characters) 的单位取出固定字符区间；</div></pre></td></tr></table></figure></p>
+<p><strong>PATH变量如下</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">root@ubuntu-03:~# echo $PATH</div><div class="line">/usr/java/jdk/bin:/usr/java/jdk/jre/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin</div></pre></td></tr></table></figure></p>
+<p><strong>将 PATH 变量取出，我要找出第五个路径。</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">root@ubuntu-03:~# echo $PATH | cut -d &apos;:&apos; -f 5</div><div class="line">/usr/sbin</div></pre></td></tr></table></figure></p>
+<p><strong>将 PATH 变量取出，我要找出第三到最后一个路径。</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">root@ubuntu-03:~# echo $PATH | cut -d &apos;:&apos; -f 3-</div><div class="line">/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin</div></pre></td></tr></table></figure></p>
+<p><strong>将 PATH 变量取出，我要找出第一到第三个路径。</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">root@ubuntu-03:~# echo $PATH | cut -d &apos;:&apos; -f 1-3</div><div class="line">/usr/java/jdk/bin:/usr/java/jdk/jre/bin:/usr/local/sbin</div></pre></td></tr></table></figure></p>
+<h3 id="wc命令"><a href="#wc命令" class="headerlink" title="wc命令"></a>wc命令</h3><p>统计文件里面有多少单词，多少行，多少字符。wc语法：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">[root@www ~]# wc [-lwm]</div><div class="line">选项与参数：</div><div class="line">-l  ：仅列出行；</div><div class="line">-w  ：仅列出多少字(英文单字)；</div><div class="line">-m  ：多少字符；</div></pre></td></tr></table></figure></p>
+<p><strong>默认使用wc统计/etc/passwd</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">root@ubuntu-03:~# wc /etc/passwd</div><div class="line">  30   42 1561 /etc/passwd</div></pre></td></tr></table></figure></p>
+<p>40是行数，45是单词数，1719是字节数</p>
+<p><strong>wc的命令比较简单使用，每个参数使用如下：</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">root@ubuntu-03:~# wc -l /etc/passwd</div><div class="line">30 /etc/passwd                      #统计行数</div><div class="line">root@ubuntu-03:~# wc -w /etc/passwd</div><div class="line">42 /etc/passwd                      #统计单词数</div><div class="line">root@ubuntu-03:~# wc -m /etc/passwd</div><div class="line">1561 /etc/passwd                    #统计文件字节数</div></pre></td></tr></table></figure></p>
+<h3 id="grep搜索命令"><a href="#grep搜索命令" class="headerlink" title="grep搜索命令"></a>grep搜索命令</h3><p>Linux系统中grep命令是一种强大的文本搜索工具，它能使用正则表达式搜索文本，并把匹 配的行打印出来。grep全称是Global Regular Expression Print，表示全局正则表达式版本，它的使用权限是所有用户。</p>
+<h3 id="awk命令"><a href="#awk命令" class="headerlink" title="awk命令"></a>awk命令</h3><p>awk是一个强大的文本分析工具，相对于grep的查找，sed的编辑，awk在其对数据分析并生成报告时，显得尤为强大。简单来说awk就是把文件逐行的读入，以空格为默认分隔符将每行切片，切开的部分再进行各种分析处理。</p>
+<p>awk有3个不同版本: awk、nawk和gawk，未作特别说明，一般指gawk，gawk 是 AWK 的 GNU 版本。</p>
+<p>awk其名称得自于它的创始人 Alfred Aho 、Peter Weinberger 和 Brian Kernighan 姓氏的首个字母。实际上 AWK 的确拥有自己的语言： AWK 程序设计语言 ， 三位创建者已将它正式定义为“样式扫描和处理语言”。它允许您创建简短的程序，这些程序读取输入文件、为数据排序、处理数据、对输入执行计算以及生成报表，还有无数其他的功能。</p>
+<p><strong>使用方法</strong><br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">awk '&#123;pattern + action&#125;' &#123;filenames&#125;</div></pre></td></tr></table></figure></p>
+<p>尽管操作可能会很复杂，但语法总是这样，其中 pattern 表示 AWK 在数据中查找的内容，而 action 是在找到匹配内容时所执行的一系列命令。花括号（{}）不需要在程序中始终出现，但它们用于根据特定的模式对一系列指令进行分组。 pattern就是要表示的正则表达式，用斜杠括起来。</p>
+<p>awk语言的最基本功能是在文件或者字符串中基于指定规则浏览和抽取信息，awk抽取信息后，才能进行其他文本操作。完整的awk脚本通常用来格式化文本文件中的信息。</p>
+<p>通常，awk是以文件的一行为处理单位的。awk每接收文件的一行，然后执行相应的命令，来处理文本。</p>
+<p><strong>调用awk</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">1.命令行方式</div><div class="line">awk [-F  field-separator]  &apos;commands&apos;  input-file(s)</div><div class="line">其中，commands 是真正awk命令，[-F域分隔符]是可选的。 input-file(s) 是待处理的文件。</div><div class="line">在awk中，文件的每一行中，由域分隔符分开的每一项称为一个域。通常，在不指名-F域分隔符的情况下，默认的域分隔符是空格。</div><div class="line"></div><div class="line">2.shell脚本方式</div><div class="line">将所有的awk命令插入一个文件，并使awk程序可执行，然后awk命令解释器作为脚本的首行，一遍通过键入脚本名称来调用。</div><div class="line">相当于shell脚本首行的：#!/bin/sh</div><div class="line">可以换成：#!/bin/awk</div><div class="line"></div><div class="line">3.将所有的awk命令插入一个单独文件，然后调用：</div><div class="line">awk -f awk-script-file input-file(s)</div><div class="line">其中，-f选项加载awk-script-file中的awk脚本，input-file(s)跟上面的是一样的</div></pre></td></tr></table></figure></p>
+<p>###入门实例<br><strong>显示最近登录的5个帐号</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">root@ubuntu-03:~# last -n 5 | awk &apos;&#123;print $1&#125;&apos;</div><div class="line">root</div><div class="line">root</div><div class="line">root</div><div class="line"></div><div class="line">wtmp</div></pre></td></tr></table></figure></p>
+<p>awk工作流程是这样的：读入有’\n’换行符分割的一条记录，然后将记录按指定的域分隔符划分域，填充域，$0则表示所有域,$1表示第一个域,$n表示第n个域。默认域分隔符是”空白键” 或 “[tab]键”,所以$1表示登录用户，$3表示登录用户ip,以此类推</p>
+<p><strong>如果只是显示/etc/passwd的账户和账户对应的shell,而账户与shell之间以tab键分割</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">root@ubuntu-03:~# cat /etc/passwd | awk -F &apos;:&apos; &apos;&#123;print $1&quot;\t&quot;$7&#125;&apos;</div><div class="line">root    /bin/bash</div><div class="line">daemon  /usr/sbin/nologin</div><div class="line">bin     /usr/sbin/nologin</div><div class="line">sys     /usr/sbin/nologin</div><div class="line">sync    /bin/sync</div></pre></td></tr></table></figure></p>
+<p><strong>如果只是显示/etc/passwd的账户和账户对应的shell,而账户与shell之间以逗号分割,而且在所有行添加列名name,shell,在最后一行添加”blue,/bin/nosh”。</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">root@ubuntu-03:~# cat /etc/passwd | awk -F &apos;:&apos; &apos;BEGIN&#123;print &quot;name, shell&quot;&#125;&#123;print $1&quot;\t&quot;$7&#125;END&#123;print &quot;blue,/bin/bash&quot;&#125;&apos;</div><div class="line">name, shell</div><div class="line">root    /bin/bash</div><div class="line">daemon  /usr/sbin/nologin</div><div class="line">bin     /usr/sbin/nologin</div><div class="line">sys     /usr/sbin/nologin</div><div class="line">sync    /bin/sync</div><div class="line">blue, /bin/bash</div></pre></td></tr></table></figure></p>
+<p>awk工作流程是这样的：先执行BEGING，然后读取文件，读入有/n换行符分割的一条记录，然后将记录按指定的域分隔符划分域，填充域，$0则表示所有域,$1表示第一个域,$n表示第n个域,随后开始执行模式所对应的动作action。接着开始读入第二条记录······直到所有的记录都读完，最后执行END操作。</p>
+<p><strong>搜索/etc/passwd有root关键字的所有行，并显示对应的shell</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">root@ubuntu-03:~# awk -F: &apos;/root/&#123;print $7&#125;&apos; /etc/passwd</div><div class="line">/bin/bash</div></pre></td></tr></table></figure></p>
+<p>这里指定了action{print $7}</p>
+<p><strong>AWK内置变量</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">ARGC               命令行参数个数</div><div class="line">ARGV               命令行参数排列</div><div class="line">ENVIRON            支持队列中系统环境变量的使用</div><div class="line">FILENAME           awk浏览的文件名</div><div class="line">FNR                浏览文件的记录数</div><div class="line">FS                 设置输入域分隔符，等价于命令行 -F选项</div><div class="line">NF                 浏览记录的域的个数</div><div class="line">NR                 已读的记录数</div><div class="line">OFS                输出域分隔符</div><div class="line">ORS                输出记录分隔符</div><div class="line">RS                 控制记录分隔符</div></pre></td></tr></table></figure></p>
+<p><strong>统计/etc/passwd:文件名，每行的行号，每行的列数，对应的完整行内容:</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">root@ubuntu-03:~# awk -F &apos;:&apos; &apos;&#123;print &quot;filename:&quot; FILENAME &quot;,linenumber:&quot; NR &quot;,columns:&quot; NF &quot;linecontent:&quot; $0&#125;&apos; /etc/passwd</div><div class="line">filename:/etc/passwd,linenumber:1,columns:7linecontent:root:x:0:0:root:/root:/bin/bash</div><div class="line">filename:/etc/passwd,linenumber:2,columns:7linecontent:daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin</div><div class="line">filename:/etc/passwd,linenumber:3,columns:7linecontent:bin:x:2:2:bin:/bin:/usr/sbin/nologin</div><div class="line">filename:/etc/passwd,linenumber:4,columns:7linecontent:sys:x:3:3:sys:/dev:/usr/sbin/nologin</div></pre></td></tr></table></figure></p>
+<p><strong>使用printf替代print,可以让代码更加简洁，易读</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">awk  -F &apos;:&apos;  &apos;&#123;printf(&quot;filename:%10s,linenumber:%s,columns:%s,linecontent:%s\n&quot;,FILENAME,NR,NF,$0)&#125;&apos; /etc/passwd</div></pre></td></tr></table></figure></p>
+<h3 id="awk编程"><a href="#awk编程" class="headerlink" title="awk编程"></a>awk编程</h3><p><strong>下面统计/etc/passwd的账户人数</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">root@ubuntu-03:~# awk &apos;&#123;count++&#125; END&#123;print &quot;total is:&quot; count&#125;&apos; /etc/passwd</div><div class="line">total is:30</div></pre></td></tr></table></figure></p>
+<p>count是自定义变量。之前的action{}里都是只有一个print,其实print只是一个语句，而action{}可以有多个语句，以;号隔开。</p>
+<p>这里没有初始化count，虽然默认是0，但是妥当的做法还是初始化为0:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">awk &apos;BEGIN&#123;count=0; print &quot;count is:&quot; count&#125; &#123;count++&#125; END&#123;print &quot;total is:&quot; count&#125;&apos; /etc/passwd</div></pre></td></tr></table></figure></p>
+<p><strong>awk的循环语句</strong><br>awk中的循环语句同样借鉴于C语言，支持while、do/while、for、break、continue，这些关键字的语义和C语言中的语义完全相同。</p>
+<p><strong>awk的数组</strong><br>因为awk中数组的下标可以是数字和字母，数组的下标通常被称为关键字(key)。值和关键字都存储在内部的一张针对key/value应用hash的表格里。由于hash不是顺序存储，因此在显示数组内容时会发现，它们并不是按照你预料的顺序显示出来的。数组和变量一样，都是在使用时自动创建的，awk也同样会自动判断其存储的是数字还是字符串。一般而言，awk中的数组用来从记录中收集信息，可以用于计算总和、统计单词以及跟踪模板被匹配的次数等等。</p>
+<p>显示/etc/passwd的账户<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">awk -F &apos;:&apos; &apos;BEGIN &#123;count=0;&#125; &#123;name[count] = $1;count++;&#125;; END&#123;for (i = 0; i &lt; NR; i++) print i, name[i]&#125;&apos; /etc/passwd</div><div class="line">0 root</div><div class="line">1 daemon</div><div class="line">2 bin</div><div class="line">3 sys</div><div class="line">4 sync</div><div class="line">5 games</div></pre></td></tr></table></figure></p>
+<h2 id="权限操作命令"><a href="#权限操作命令" class="headerlink" title="权限操作命令"></a>权限操作命令</h2><p>Linux一般将文件可存取访问的身份分为3个类别：owner, group, others且三种身份各有read,write,execute等权限。</p>
+<h3 id="用户和用户组"><a href="#用户和用户组" class="headerlink" title="用户和用户组"></a>用户和用户组</h3><p><strong>文件所有者</strong><br>可以设置除本人之外的用户无法查看文件的内容<br><strong>用户组</strong><br>假设A组有a1,a2,a3三个成员，B组有b1,b2成员，共同完成一份报告F。设置了适当的权限之后，A,B可以相互修改数据。C团体无法查看也无法修改。<br><strong>其他人</strong><br>（相对概念），比如f是A组以外的成员，那么f相对于A组成员就是其他人。<br><strong>超级用户root</strong><br>他拥有最大的权限，也管理普通用户<br><strong>相关文件</strong><br>在linux系统中，默认的系统账户和普通账户信息记录在/etc/passwd文件中</p>
+<p>个人密码在/etc/shadow下</p>
+<p>用户组名称记录在/etc/group下，所以这三个文件不能随便删除</p>
+<h3 id="linux文件权限的概念"><a href="#linux文件权限的概念" class="headerlink" title="linux文件权限的概念"></a>linux文件权限的概念</h3><p>ls -la可查看文件详情<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">drwxr-xr-x 4 root root 4096 Feb 21 19:18 neo4j</div><div class="line">  |  |  |  |   |    |    |        |</div><div class="line">文件权限  连接数 |    |  文件大小  文件最后被修改时间</div><div class="line">           文件所有者 |</div><div class="line">                 文件所属用户组</div></pre></td></tr></table></figure></p>
+<p>d rwx r-x r-x 中d代表文件类型，rwx代表文件所有者权限，r-x代表文件所属用户组权限，—代表其他人权限</p>
+<ul>
+<li>r:read 可读</li>
+<li>w:write 可写</li>
+<li>x:execute 可执行</li>
+<li>-：没有对应权限</li>
+</ul>
+<h3 id="改变文件属性的权限"><a href="#改变文件属性的权限" class="headerlink" title="改变文件属性的权限"></a>改变文件属性的权限</h3><ul>
+<li>chgrp：改变文件所属用户组</li>
+<li>chown: 改变文件所有者</li>
+<li>chmod: 改变文件权限</li>
+</ul>
+<p><strong>改变所属用户组</strong><br>chgrp(change group) 不过，要被改变的组名必须在/etc/group文件内才行，否则会出错。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">chgrp [-R] 文件名/目录名 -R：进行递归，可以修改目录下的文件</div></pre></td></tr></table></figure></p>
+<p><strong>改变文件所有者</strong><br>chown(change owner) 用户名必须存在于/etc/passwd中才行<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">chown [-R] 账号名称 文件名/目录名</div><div class="line">chown [-R] 账号名称：用户组名 文件名/目录名</div></pre></td></tr></table></figure></p>
+<p><strong>改变权限</strong><br>chmod(change mode)有两种改变权限的方式：</p>
+<p>1.数字类型改变文件权限</p>
+<p>linux的基本权限有9个，即owner,group,others三中身份都有自己的r/w/x权限，各种权限对应的数字是：r-4,w-2,x-1。</p>
+<p>例如：-rw-r–r–</p>
+<p>owner=rw-=4+2+0=6, group=r–=4+0+0=4,others=r–=4+0+0=4<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">chmod [-R] xyz 文件名/目录名</div><div class="line">chmod 777 test.txt</div></pre></td></tr></table></figure></p>
+<p>2.符号类型改变权限<br>u,g,o代表三中身份，a代表all，即全部身份</p>
+<p>修改test.txt的权限为rwxr-xr-x:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">chmod u=rwx,g=r-x,o=r-x test.txt</div></pre></td></tr></table></figure></p>
+<p>去掉test.txt所有身份的x权限<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">chmod a-x test-txt</div></pre></td></tr></table></figure></p>
+<p>添加test.txt所有身份的x权限<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">chmod a+x test.txt</div></pre></td></tr></table></figure></p>
+<h2 id="状态查看命令"><a href="#状态查看命令" class="headerlink" title="状态查看命令"></a>状态查看命令</h2><h2 id="远程操作命令"><a href="#远程操作命令" class="headerlink" title="远程操作命令"></a>远程操作命令</h2><h3 id="ssh命令"><a href="#ssh命令" class="headerlink" title="ssh命令"></a>ssh命令</h3><h3 id="scp命令"><a href="#scp命令" class="headerlink" title="scp命令"></a>scp命令</h3>
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Linux/" rel="tag">#Linux</a>
+          
+            <a href="/tags/shell/" rel="tag">#shell</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/08/03/Zookeeper学习笔记六/" rel="next" title="Zookeeper学习笔记六">
+                <i class="fa fa-chevron-left"></i> Zookeeper学习笔记六
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/11/12/Neo4j批量导入数据BatchInserter/" rel="prev" title="Neo4j批量导入数据BatchInserter">
+                Neo4j批量导入数据BatchInserter <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/10/08/Linux查用命令小结/"
+           data-title="Linux常用命令小结" data-url="http://yoursite.com/2016/10/08/Linux查用命令小结/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="//schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/headphoto.png"
+               alt="ZhaoBing" />
+          <p class="site-author-name" itemprop="name">ZhaoBing</p>
+          <p class="site-description motion-element" itemprop="description">天人焉有两般义，道不虚行只在人</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">17</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/zhaobingcn" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#文件操作命令"><span class="nav-number">1.</span> <span class="nav-text">文件操作命令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#rm命令"><span class="nav-number">1.1.</span> <span class="nav-text">rm命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#mkdir命令"><span class="nav-number">1.2.</span> <span class="nav-text">mkdir命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#touch命令"><span class="nav-number">1.3.</span> <span class="nav-text">touch命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#cp命令"><span class="nav-number">1.4.</span> <span class="nav-text">cp命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#mv命令"><span class="nav-number">1.5.</span> <span class="nav-text">mv命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#cd命令"><span class="nav-number">1.6.</span> <span class="nav-text">cd命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#tar命令"><span class="nav-number">1.7.</span> <span class="nav-text">tar命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ls命令"><span class="nav-number">1.8.</span> <span class="nav-text">ls命令</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#文本操作命令"><span class="nav-number">2.</span> <span class="nav-text">文本操作命令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#vi命令"><span class="nav-number">2.1.</span> <span class="nav-text">vi命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#vim命令"><span class="nav-number">2.2.</span> <span class="nav-text">vim命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#cat命令"><span class="nav-number">2.3.</span> <span class="nav-text">cat命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#sort命令"><span class="nav-number">2.4.</span> <span class="nav-text">sort命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#uniq命令"><span class="nav-number">2.5.</span> <span class="nav-text">uniq命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#cut命令"><span class="nav-number">2.6.</span> <span class="nav-text">cut命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#wc命令"><span class="nav-number">2.7.</span> <span class="nav-text">wc命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#grep搜索命令"><span class="nav-number">2.8.</span> <span class="nav-text">grep搜索命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#awk命令"><span class="nav-number">2.9.</span> <span class="nav-text">awk命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#awk编程"><span class="nav-number">2.10.</span> <span class="nav-text">awk编程</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#权限操作命令"><span class="nav-number">3.</span> <span class="nav-text">权限操作命令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#用户和用户组"><span class="nav-number">3.1.</span> <span class="nav-text">用户和用户组</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#linux文件权限的概念"><span class="nav-number">3.2.</span> <span class="nav-text">linux文件权限的概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#改变文件属性的权限"><span class="nav-number">3.3.</span> <span class="nav-text">改变文件属性的权限</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#状态查看命令"><span class="nav-number">4.</span> <span class="nav-text">状态查看命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#远程操作命令"><span class="nav-number">5.</span> <span class="nav-text">远程操作命令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ssh命令"><span class="nav-number">5.1.</span> <span class="nav-text">ssh命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#scp命令"><span class="nav-number">5.2.</span> <span class="nav-text">scp命令</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2015 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ZhaoBing</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.2"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"zhaobingcn"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+       search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="popoverlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+    'use strict';
+    $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+            // get the contents from search data
+            isfetched = true;
+            $('.popup').detach().appendTo('.header-inner');
+            var datas = $( "entry", xmlResponse ).map(function() {
+                return {
+                    title: $( "title", this ).text(),
+                    content: $("content",this).text(),
+                    url: $( "url" , this).text()
+                };
+            }).get();
+            var $input = document.getElementById(search_id);
+            var $resultContent = document.getElementById(content_id);
+            $input.addEventListener('input', function(){
+                var matchcounts = 0;
+                var str='<ul class=\"search-result-list\">';
+                var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                $resultContent.innerHTML = "";
+                if (this.value.trim().length > 1) {
+                // perform local searching
+                datas.forEach(function(data) {
+                    var isMatch = false;
+                    var content_index = [];
+                    var data_title = data.title.trim().toLowerCase();
+                    var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                    var data_url = decodeURIComponent(data.url);
+                    var index_title = -1;
+                    var index_content = -1;
+                    var first_occur = -1;
+                    // only match artiles with not empty titles and contents
+                    if(data_title != '') {
+                        keywords.forEach(function(keyword, i) {
+                            index_title = data_title.indexOf(keyword);
+                            index_content = data_content.indexOf(keyword);
+                            if( index_title >= 0 || index_content >= 0 ){
+                                isMatch = true;
+								if (i == 0) {
+                                    first_occur = index_content;
+                                }
+                            } 
+							
+                        });
+                    }
+                    // show search results
+                    if (isMatch) {
+                        matchcounts += 1;
+                        str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                        var content = data.content.trim().replace(/<[^>]+>/g,"");
+                        if (first_occur >= 0) {
+                            // cut out 100 characters
+                            var start = first_occur - 20;
+                            var end = first_occur + 80;
+                            if(start < 0){
+                                start = 0;
+                            }
+                            if(start == 0){
+                                end = 50;
+                            }
+                            if(end > content.length){
+                                end = content.length;
+                            }
+                            var match_content = content.substring(start, end);
+                            // highlight all keywords
+                            keywords.forEach(function(keyword){
+                                var regS = new RegExp(keyword, "gi");
+                                match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                            });
+
+                            str += "<p class=\"search-result\">" + match_content +"...</p>"
+                        }
+                        str += "</li>";
+                    }
+                })};
+                str += "</ul>";
+                if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+                if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+                $resultContent.innerHTML = str;
+            });
+            proceedsearch();
+        }
+    });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".popoverlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+  
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+  </script>
+
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for (i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  </script>
+  <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+  
+
+  
+
+  
+
+
+</body>
+</html>
