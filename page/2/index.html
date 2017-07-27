@@ -282,6 +282,263 @@
             
               
                 
+                <a class="post-title-link" href="/2016/07/29/zookeeper学习笔记五/" itemprop="url">
+                  zookeeper学习笔记五
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-07-29T12:23:05+08:00" content="2016-07-29">
+              2016-07-29
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Zookeeper/" itemprop="url" rel="index">
+                    <span itemprop="name">Zookeeper</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/07/29/zookeeper学习笔记五/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/07/29/zookeeper学习笔记五/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>Zookeeper提供了ALC的权限控制机制，简单来说就是通过设置Zookeeper服务器上数据节点的ACL，来控制客户端对该数据节点的访问权限。Zookeeper提供了多种权限控制模式，这里选择digest来了解下API的使用方法。</p>
+<h2 id="创建带权限信息的节点"><a href="#创建带权限信息的节点" class="headerlink" title="创建带权限信息的节点"></a>创建带权限信息的节点</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">//使用含权限信息的ZooKeeper会话创建数据节点</div><div class="line">public class ZNodeForFoo implements Watcher&#123;</div><div class="line">    private static CountDownLatch connectedSemaphore = new CountDownLatch(1);</div><div class="line">    public static void main(String[] args) throws Exception &#123;</div><div class="line">        String path = &quot;/zk-book-auth_test&quot;;</div><div class="line">        ZooKeeper zookeeper = new ZooKeeper(&quot;localhost:2181&quot;, 50000, new ZNodeForFoo());</div><div class="line">		connectedSemaphore.await();</div><div class="line">        //添加带权限信息的节点</div><div class="line">        zookeeper.addAuthInfo(&quot;digest&quot;, &quot;foo:true&quot;.getBytes());</div><div class="line">        zookeeper.create( path, &quot;init&quot;.getBytes(), Ids.CREATOR_ALL_ACL, CreateMode.EPHEMERAL );</div><div class="line">    &#125;</div><div class="line">    @Override</div><div class="line">    public void process(WatchedEvent watchedEvent) &#123;</div><div class="line">        if (Event.KeeperState.SyncConnected == watchedEvent.getState()) &#123;</div><div class="line">            connectedSemaphore.countDown();</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="使用不同的权限信息访问节点"><a href="#使用不同的权限信息访问节点" class="headerlink" title="使用不同的权限信息访问节点"></a>使用不同的权限信息访问节点</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div></pre></td><td class="code"><pre><div class="line">//使用不同的权限信息的ZooKeeper会话访问含权限信息的数据节点</div><div class="line">public class GetFooNodeByAuth implements Watcher&#123;</div><div class="line">    private static CountDownLatch noAuthSemaphore = new CountDownLatch(1);</div><div class="line">    private static CountDownLatch wrongAuthSemaphore = new CountDownLatch(1);</div><div class="line">    private static CountDownLatch rightAuthSemaphore = new CountDownLatch(1);</div><div class="line">    public static void main(String[] args) throws Exception &#123;</div><div class="line">        String path = &quot;/zk-book-auth_test&quot;;</div><div class="line">        try&#123;</div><div class="line">            ZooKeeper noAuthZK = new ZooKeeper(&quot;localhost:2181&quot;, 50000, new GetFooNodeByAuth());</div><div class="line">            noAuthSemaphore.await();</div><div class="line">            //使用不包含权限信息的客户端访问节点，抛出异常</div><div class="line">            noAuthZK.getData( path, false, null );</div><div class="line">        &#125;catch(Exception e)&#123;</div><div class="line">            e.printStackTrace();</div><div class="line">        &#125;</div><div class="line">        try&#123;</div><div class="line">            ZooKeeper wrongAuthZK = new ZooKeeper(&quot;localhost:2181&quot;, 50000, new GetFooNodeByAuth());</div><div class="line">            wrongAuthSemaphore.await();</div><div class="line">            wrongAuthZK.addAuthInfo(&quot;digest&quot;, &quot;bar:true&quot;.getBytes());</div><div class="line">            //使用错误的权限信息访问节点，抛出异常</div><div class="line">            wrongAuthZK.getData( path, false, null );</div><div class="line">        &#125;catch (Exception e)&#123;</div><div class="line">            e.printStackTrace();</div><div class="line">        &#125;</div><div class="line">        ZooKeeper rightAuthZK = new ZooKeeper(&quot;localhost:2181&quot;, 50000, new GetFooNodeByAuth());</div><div class="line">        rightAuthSemaphore.await();</div><div class="line">        rightAuthZK.addAuthInfo(&quot;digest&quot;, &quot;foo:true&quot;.getBytes());</div><div class="line">        //使用正确的权限信息获取节点</div><div class="line">        System.out.println(new String(rightAuthZK.getData( path, false, null )));</div><div class="line">    &#125;</div><div class="line">    @Override</div><div class="line">    public void process(WatchedEvent watchedEvent) &#123;</div><div class="line">        if (Event.KeeperState.SyncConnected == watchedEvent.getState()) &#123;</div><div class="line">            if(noAuthSemaphore.getCount() &gt; 0)&#123;</div><div class="line">                noAuthSemaphore.countDown();</div><div class="line">                return;</div><div class="line">            &#125;</div><div class="line">            if(wrongAuthSemaphore.getCount() &gt; 0)&#123;</div><div class="line">                wrongAuthSemaphore.countDown();</div><div class="line">                return;</div><div class="line">            &#125;</div><div class="line">            if(rightAuthSemaphore.getCount() &gt; 0)&#123;</div><div class="line">                rightAuthSemaphore.countDown();</div><div class="line">                return;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="删除节点的权限控制"><a href="#删除节点的权限控制" class="headerlink" title="删除节点的权限控制"></a>删除节点的权限控制</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div></pre></td><td class="code"><pre><div class="line">//删除节点的权限控制</div><div class="line">public class DeleteNodeByAuth implements Watcher&#123;</div><div class="line">    private static CountDownLatch createSemaphore = new CountDownLatch(1);</div><div class="line">    private static CountDownLatch deleteChildNoAuthSemaphore = new CountDownLatch(1);</div><div class="line">    private static CountDownLatch deleteChildAuthSemaphore = new CountDownLatch(1);</div><div class="line">    private static CountDownLatch deleteNoAuthSemaphore = new CountDownLatch(1);</div><div class="line">    public static void main(String[] args) throws Exception &#123;</div><div class="line">        String path = &quot;/zk-book-auth_test&quot;;</div><div class="line">        String pathChild = &quot;/zk-book-auth_test/child&quot;;</div><div class="line">        ZooKeeper createZK = new ZooKeeper(&quot;localhost:2181&quot;,5000,new DeleteNodeByAuth());</div><div class="line">        createSemaphore.await();</div><div class="line">        createZK.addAuthInfo(&quot;digest&quot;, &quot;foo:true&quot;.getBytes());</div><div class="line">        createZK.create( pathChild, &quot;initChild&quot;.getBytes(), Ids.CREATOR_ALL_ACL, CreateMode.PERSISTENT );</div><div class="line"></div><div class="line">        try &#123;</div><div class="line">            ZooKeeper deleteChildNoAuthZK = new ZooKeeper(&quot;localhost:2181&quot;,50000,new DeleteNodeByAuth());</div><div class="line">            deleteChildNoAuthSemaphore.await();</div><div class="line">            deleteChildNoAuthZK.delete( pathChild, -1 );</div><div class="line">        &#125; catch ( Exception e ) &#123;</div><div class="line">           System.out.println( &quot;删除节点失败: &quot; + e.getMessage() );</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        ZooKeeper deleteChildAuthZK = new ZooKeeper(&quot;localhost:2181&quot;,50000,new DeleteNodeByAuth());</div><div class="line">        deleteChildAuthSemaphore.await();</div><div class="line">        deleteChildAuthZK.addAuthInfo(&quot;digest&quot;, &quot;foo:true&quot;.getBytes());</div><div class="line">        deleteChildAuthZK.delete( pathChild, -1 );</div><div class="line">        System.out.println( &quot;成功删除节点：&quot; + pathChild );</div><div class="line">        /**</div><div class="line">         * 删除权限作用的范围是子节点，所有不包含权限信息的客户端可以删除/zk-book-auth_test节点</div><div class="line">         */</div><div class="line">        ZooKeeper deleteNoAuthZK = new ZooKeeper(&quot;localhost:2181&quot;, 50000, new DeleteNodeByAuth());</div><div class="line">        deleteNoAuthSemaphore.await();</div><div class="line">        deleteNoAuthZK.delete( path, -1 );</div><div class="line">        System.out.println( &quot;成功删除节点：&quot; + path );</div><div class="line">    &#125;</div><div class="line">    @Override</div><div class="line">    public void process(WatchedEvent watchedEvent) &#123;</div><div class="line">        if (Event.KeeperState.SyncConnected == watchedEvent.getState()) &#123;</div><div class="line">            if(createSemaphore.getCount() &gt; 0)&#123;</div><div class="line">                createSemaphore.countDown();</div><div class="line">                return;</div><div class="line">            &#125;</div><div class="line">            if(deleteChildNoAuthSemaphore.getCount() &gt; 0)&#123;</div><div class="line">                deleteChildNoAuthSemaphore.countDown();</div><div class="line">                return;</div><div class="line">            &#125;</div><div class="line">            if(deleteChildAuthSemaphore.getCount() &gt; 0)&#123;</div><div class="line">                deleteChildAuthSemaphore.countDown();</div><div class="line">                return;</div><div class="line">            &#125;</div><div class="line">            if(deleteNoAuthSemaphore.getCount() &gt; 0)&#123;</div><div class="line">                deleteNoAuthSemaphore.countDown();</div><div class="line">                return;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/07/27/Zookeeper学习笔记二/" itemprop="url">
+                  Zookeeper学习笔记二
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-07-27T14:36:07+08:00" content="2016-07-27">
+              2016-07-27
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Zookeeper/" itemprop="url" rel="index">
+                    <span itemprop="name">Zookeeper</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/07/27/Zookeeper学习笔记二/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/07/27/Zookeeper学习笔记二/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>Zookeeper官网下载下载最新的安装包，目前最新的稳定版是Release 3.4.9(stable)，本课题所有示例都将基于这个版本，整体环境如下：</p>
+<ul>
+<li>电脑环境：Ubuntu 16.04</li>
+<li>JDK：1.8</li>
+<li>Zookeeper：Release 3.4.9(stable)</li>
+</ul>
+<h2 id="安装Zookeeper"><a href="#安装Zookeeper" class="headerlink" title="安装Zookeeper"></a>安装Zookeeper</h2><h2 id="1、创建目录，安装zookeeper"><a href="#1、创建目录，安装zookeeper" class="headerlink" title="1、创建目录，安装zookeeper"></a>1、创建目录，安装zookeeper</h2><p>手上只有一台测试机器，所以采用伪集群的方式运行zookeeper，下面创建三个文件夹server1、server2、server3分别用于安装zookeeper。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">cd /opt</div><div class="line">sudo mkdir zookeeper-3.4.9</div><div class="line">sudo chmod -R 777 zookeeper-3.4.9</div><div class="line">cd zookeeper-3.4.9</div><div class="line">cp ~/Downloads/zookeeper-3.4.9.tar.gz ./</div><div class="line">mkdir server1 &amp;&amp; tar -zxvf zookeeper-3.4.9.tar.gz -C ./server1 --strip-components 1</div><div class="line">mkdir server2 &amp;&amp; tar -zxvf zookeeper-3.4.9.tar.gz -C ./server2 --strip-components 1</div><div class="line">mkdir server3 &amp;&amp; tar -zxvf zookeeper-3.4.9.tar.gz -C ./server3 --strip-components 1</div><div class="line">rm zookeeper-3.4.9.tar.gz</div></pre></td></tr></table></figure></p>
+<h2 id="2、修改配置文件"><a href="#2、修改配置文件" class="headerlink" title="2、修改配置文件"></a>2、修改配置文件</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line">#server1</div><div class="line">mkdir ./server1/data</div><div class="line">cp server1/conf/zoo_sample.cfg server1/conf/zoo.cfg</div><div class="line">vim server1/conf/zoo.cfg</div><div class="line">    #需要修改的属性如下</div><div class="line">    dataDir=/opt/zookeeper-3.4.9/server1/data</div><div class="line">    clientPort=2181</div><div class="line">    server.1=localhost:2888:3888</div><div class="line">    server.2=localhost:2889:3889</div><div class="line">    server.3=localhost:2890:3890</div><div class="line">#创建与server对应的myid</div><div class="line">echo &quot;1&quot; &gt; server1/data/myid</div><div class="line">#server2</div><div class="line">mkdir server2/data</div><div class="line">cp server2/conf/zoo_sample.cfg server2/conf/zoo.cfg</div><div class="line">vim server2/conf/zoo.cfg</div><div class="line">    #需要修改的属性如下</div><div class="line">    dataDir=/opt/zookeeper-3.4.9/server2/data</div><div class="line">    clientPort=2182</div><div class="line">    server.1=localhost:2888:3888</div><div class="line">    server.2=localhost:2889:3889</div><div class="line">    server.3=localhost:2890:3890</div><div class="line">#创建与server对应的myid</div><div class="line">echo &quot;2&quot; &gt; server2/data/myid</div><div class="line">#server3</div><div class="line">mkdir server3/data</div><div class="line">cp server3/conf/zoo_sample.cfg server3/conf/zoo.cfg</div><div class="line">vim server3/conf/zoo.cfg</div><div class="line">    #需要修改的属性如下</div><div class="line">    dataDir=/opt/zookeeper-3.4.9/server3/data</div><div class="line">    clientPort=2183</div><div class="line">    server.1=localhost:2888:3888</div><div class="line">    server.2=localhost:2889:3889</div><div class="line">    server.3=localhost:2890:3890</div><div class="line">#创建与server对应的myid</div><div class="line">echo &quot;3&quot; &gt; server3/data/myid</div></pre></td></tr></table></figure>
+<h2 id="3、启动服务测试"><a href="#3、启动服务测试" class="headerlink" title="3、启动服务测试"></a>3、启动服务测试</h2><p>下图显示信息表示服务启动正常：</p>
+<p><img src="/images/zookeeper_2.png" alt=""></p>
+<h2 id="客户端脚本"><a href="#客户端脚本" class="headerlink" title="客户端脚本"></a>客户端脚本</h2><p>客户端脚本的测试基于上面安装的Zookeeper服务，之后的所有测试示例同样基于上述服务。</p>
+<h2 id="创建节点"><a href="#创建节点" class="headerlink" title="创建节点"></a>创建节点</h2><p>使用create命令可以创建一个节点：create /first-node zhaobing，表示在Zookeeper的根节点下创建了一个/first-node的节点，并且节点的数据内容是”bboyjing”。</p>
+<h2 id="读取节点"><a href="#读取节点" class="headerlink" title="读取节点"></a>读取节点</h2><p>使用ls命令，可以列出指定节点下的所有子节点：ls /，表示查看根节点下的所有子节点。<br>输出：[first-node, zookeeper]，first-node是之前创建的节点，zookeeper节点是自带的保留节点。<br>使用get命令，可以获取指定节点的数据内容和属性信息：get /first-node</p>
+<h2 id="更新节点"><a href="#更新节点" class="headerlink" title="更新节点"></a>更新节点</h2><p>使用set命令，可以更新指定节点的数据内容：set /first-node hello-bboyjing</p>
+<h2 id="删除节点"><a href="#删除节点" class="headerlink" title="删除节点"></a>删除节点</h2><p>使用delete命令，可以删除指定节点：delete /first-node，要注意的是指定节点没有子节点才可以被删除</p>
+<h2 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h2><p>上述的命令只是简单的演示，每个命令还会有其他参数，比如创建节点时可以选择永久节点还是临时节点，更新的时候可以基于某个version之类的，这里就不展开了。</p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2016/07/26/zookeeper学习笔记三/" itemprop="url">
                   zookeeper学习笔记三【java客户端API的使用】
                 </a>
@@ -1330,7 +1587,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">18</span>
+              <span class="site-state-item-count">20</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -1347,7 +1604,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">17</span>
+                <span class="site-state-item-count">22</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
