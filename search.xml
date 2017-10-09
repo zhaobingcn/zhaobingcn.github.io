@@ -1,6 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[node快速入门]]></title>
+    <url>%2F2017%2F08%2F24%2Fnode%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8%2F</url>
+    <content type="text"><![CDATA[CommonJS规范CommonJS对模块的定义十分简单，主要分为模块引用，模块定义和模块标识三个部分。 模块引用模块引用的示例代码如下：1var math = require(&quot;math&quot;) 即可以引入一个模块的API到当前上下文。 模块定义在模块中，上下文提供了require()来引入外部模块。对应引入的功能，]]></content>
+      <tags>
+        <tag>-nodeJS -后端开发</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[算法之动态规划-硬币问题]]></title>
+    <url>%2F2017%2F08%2F23%2F%E7%AE%97%E6%B3%95%E4%B9%8B%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92-%E7%A1%AC%E5%B8%81%E9%97%AE%E9%A2%98%2F</url>
+    <content type="text"><![CDATA[#从硬币问题开始]]></content>
+      <tags>
+        <tag>-算法</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[Tornado]]></title>
+    <url>%2F2017%2F08%2F10%2FTornado%2F</url>
+    <content type="text"><![CDATA[最近需要使用python做后台研发，因此学习了下python tornado相关的知识，在这里记录下来方便以后回顾。 Tornado简介Tornado是使用Python编写的一个强大的、可扩展的Web服务器。它在处理严峻的网络流量时表现得足够强健，但却在创建和编写时有着足够的轻量级，并能够被用在大量的应用和工具中。 第一个Tornado示例1234567891011121314import tornado.ioloopimport tornado.webclass MainHandler(tornado.web.RequestHandler): def get(self): self.write("Hello, world")application = tornado.web.Application([ (r"/", MainHandler),])if __name__ == "__main__": application.listen(8888) tornado.ioloop.IOLoop.instance().start() 在浏览器输入localhost:8888即可以得到hello world的输出，这是一个最简单的发出http get请求，并且返回字符串的例子。 内建方法get_argument1234class StoryHandler(tornado.web.RequestHandler): def get(self): name = self.get_argument("name", "admin"); self.write("you request the story " + name); 第一个参数为我们定义的参数形参名，第二个参数为默认参数，如果我们传递参数将使用第二个参数作为默认值。 参数handlers123application = tornado.web.Application([ (r"/", MainHandler),]) 这里的参数handle非常重要，值得我们更加深入的研究。他是元组组成的一个列表，其中第一个参数是解析url的正则表达式，第二个参数是RequestHander类。 字符串服务12345678910111213141516171819202122232425262728293031import textwrapimport tornado.httpserverimport tornado.ioloopimport tornado.optionsimport tornado.webfrom tornado.options import define, optionsdefine("port", default=8000, help="run on the given port", type=int)class ReverseHandler(tornado.web.RequestHandler): def get(self, input): self.write(input[::-1])class WrapHandler(tornado.web.RequestHandler): def post(self): text = self.get_argument('text') width = self.get_argument('width', 40) self.write(textwrap.fill(text, int(width))) if __name__ == "__main__": tornado.options.parse_command_line() app = tornado.web.Application( handlers=[ (r"/reverse/(\w+)", ReverseHandler), (r"/wrap", WrapHandler) ] ) http_server = tornado.httpserver.HTTPServer(app) http_server.listen(options.port) tornado.ioloop.IOLoop.instance().start() 这里有两个Handler，第一个是将字符串翻转，第二个是输入参数为字符串，并且在一定的宽度范围内显示。 你可以看到这里的get方法有一个额外的参数input。这个参数将包含匹配处理函数正则表达式第一个括号里的字符串。（如果正则表达式中有一系列额外的括号，匹配的字符串将被按照在正则表达式中出现的顺序作为额外的参数传递进来。） HTTP方法一个Requesthandler类里面可以有多个HTTP方法，虽然上面我们只定义了一种HTTP方法，但是实际中我们是可以定义多种HTTP方法的。包括（GET,POST,PUT,DELETE,HEAD,OPTION）等等。下面一个就是定义了GET与POST方法的RequestHandler类。123456789class WidgetHandler(tornado.web.RequestHandler): def get(self, widget_id): widget = retrieve_from_db(widget_id) self.write(widget.serialize()) def post(self, widget_id): widget = retrieve_from_db(widget_id) widget['foo'] = self.get_argument('foo') save_to_db(widget) 模板和表单模仿一个表单的提交请求，并且获取得到的参数值1234567891011121314151617181920212223242526272829303132import os.pathimport tornado.httpserverimport tornado.ioloopimport tornado.optionsimport tornado.webfrom tornado.options import define, optionsdefine("port", default=8000, help="run on the given port", type=int)class IndexHandler(tornado.web.RequestHandler): def get(self): self.render('index.html')class PoemPageHandler(tornado.web.RequestHandler): def post(self): noun1 = self.get_argument('noun1') noun2 = self.get_argument('noun2') verb = self.get_argument('verb') noun3 = self.get_argument('noun3') self.render('poem.html', roads=noun1, wood=noun2, made=verb, difference=noun3)if __name__ == '__main__': tornado.options.parse_command_line() app = tornado.web.Application( handlers=[(r'/', IndexHandler), (r'/poem', PoemPageHandler)], template_path=os.path.join(os.path.dirname(__file__), "../templates") ) http_server = tornado.httpserver.HTTPServer(app) http_server.listen(options.port) tornado.ioloop.IOLoop.instance().start() index.html页面，包括form表单，用的是post请求。1234567891011121314&lt;!DOCTYPE html&gt;&lt;html&gt; &lt;head&gt;&lt;title&gt;Poem Maker Pro&lt;/title&gt;&lt;/head&gt; &lt;body&gt; &lt;h1&gt;Enter terms below.&lt;/h1&gt; &lt;form method="post" action="/poem"&gt; &lt;p&gt;Plural noun&lt;br&gt;&lt;input type="text" name="noun1"&gt;&lt;/p&gt; &lt;p&gt;Singular noun&lt;br&gt;&lt;input type="text" name="noun2"&gt;&lt;/p&gt; &lt;p&gt;Verb (past tense)&lt;br&gt;&lt;input type="text" name="verb"&gt;&lt;/p&gt; &lt;p&gt;Noun&lt;br&gt;&lt;input type="text" name="noun3"&gt;&lt;/p&gt; &lt;input type="submit"&gt; &lt;/form&gt; &lt;/body&gt;&lt;/html&gt; poem页面，即模板页面，使用得到的数据填充，填充一个参数的标识符是{}12345678910&lt;!DOCTYPE html&gt;&lt;html&gt; &lt;head&gt;&lt;title&gt;Poem Maker Pro&lt;/title&gt;&lt;/head&gt; &lt;body&gt; &lt;h1&gt;Your poem&lt;/h1&gt; &lt;p&gt;Two &#123;&#123;roads&#125;&#125; diverged in a &#123;&#123;wood&#125;&#125;, and I—&lt;br&gt;I took the one less travelled by,&lt;br&gt;And that has &#123;&#123;made&#125;&#125; all the &#123;&#123;difference&#125;&#125;.&lt;/p&gt; &lt;/body&gt;&lt;/html&gt; self.render会开始渲染模板，但是这个模板中没有任何我们传入的参数，下面的poem页面即有我们传入参数的模板渲染，这个叫填充。]]></content>
+      <tags>
+        <tag>Python</tag>
+        <tag>Python Web</tag>
+        <tag>WSGI</tag>
+        <tag>Tornado</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[图计算最新进展]]></title>
+    <url>%2F2017%2F07%2F27%2F%E5%9B%BE%E8%AE%A1%E7%AE%97%E6%9C%80%E6%96%B0%E8%BF%9B%E5%B1%95%2F</url>
+    <content type="text"></content>
+      <tags>
+        <tag>Graph</tag>
+        <tag>图计算</tag>
+        <tag>机器学习</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[SpringBoot项目部署]]></title>
     <url>%2F2017%2F07%2F25%2FSpringBoot%E9%A1%B9%E7%9B%AE%E9%83%A8%E7%BD%B2%2F</url>
     <content type="text"><![CDATA[常见问题使用Spring Boot构建项目的时候因为默认构建的包为jar包，因此会出现一些部署上的困惑，在这里记录下来Sping Boot程序的部署过程，方便之后回顾。 修改打包形式在pom.xml中设置打包格式war 移除服务器已有的插件如果构建的是web程序，则需要排除tomcat。 1234567891011&lt;dependency&gt; &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt; &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt; &lt;!-- 移除嵌入式tomcat插件 --&gt; &lt;exclusions&gt; &lt;exclusion&gt; &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt; &lt;artifactId&gt;spring-boot-starter-tomcat&lt;/artifactId&gt; &lt;/exclusion&gt; &lt;/exclusions&gt;&lt;/dependency&gt; 添加servlet-api的依赖下面两种方法都可以，任选其一123456&lt;dependency&gt; &lt;groupId&gt;javax.servlet&lt;/groupId&gt; &lt;artifactId&gt;javax.servlet-api&lt;/artifactId&gt; &lt;version&gt;3.1.0&lt;/version&gt; &lt;scope&gt;provided&lt;/scope&gt;&lt;/dependency&gt; 第二种方法123456&lt;dependency&gt; &lt;groupId&gt;org.apache.tomcat&lt;/groupId&gt; &lt;artifactId&gt;tomcat-servlet-api&lt;/artifactId&gt; &lt;version&gt;8.0.36&lt;/version&gt; &lt;scope&gt;provided&lt;/scope&gt;&lt;/dependency&gt; 修改启动类，并且重写初始化方法我们常用的是用main方法启动，代码如下：123456@SpringBootApplicationpublic class Application &#123; public static void main(String[] args) &#123; SpringApplication.run(Application.class, args); &#125;&#125; 在这里我们需要使用类似web.xml的配制方法来启动spring上下文了，在Application的同级目录下添加SpringBootStartApplication类： 1234567891011/** * 修改启动类，继承 SpringBootServletInitializer 并重写 configure 方法 */public class SpringBootStartApplication extends SpringBootServletInitializer &#123; @Override protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) &#123; // 注意这里要指向原先用main方法执行的Application启动类 return builder.sources(Application.class); &#125;&#125; 打包部署然后需要使用mvn package命令将项目打包，把打包好的项目移动到tomcat或jetty的webapp目录下。重新启动jetty或者tomcat. 1http://localhost:[端口号]/[项目名]]]></content>
