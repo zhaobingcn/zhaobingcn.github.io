@@ -282,6 +282,106 @@
             
               
                 
+                <a class="post-title-link" href="/2017/10/09/JavaIO学习/" itemprop="url">
+                  JavaIO学习
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-10-09T20:39:09+08:00" content="2017-10-09">
+              2017-10-09
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2017/10/09/JavaIO学习/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/10/09/JavaIO学习/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2017/08/24/node快速入门/" itemprop="url">
                   node快速入门
                 </a>
@@ -1329,169 +1429,6 @@
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/12/09/Neo4j集群搭建/" itemprop="url">
-                  Neo4j集群搭建
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-12-09T23:36:19+08:00" content="2016-12-09">
-              2016-12-09
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/Neo4j/" itemprop="url" rel="index">
-                    <span itemprop="name">Neo4j</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/12/09/Neo4j集群搭建/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/12/09/Neo4j集群搭建/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="Neo4j集群的功能"><a href="#Neo4j集群的功能" class="headerlink" title="Neo4j集群的功能"></a>Neo4j集群的功能</h2><p>Neo4j可以在集群模式下配置，以适应不同的负载，容错和可用硬件的要求。Neo4j集群由一个Matser实例和零个或多个Slave实例组成。 集群中的所有实例都在其本地数据库文件中具有数据的完整副本。</p>
-<p>一个具有三个实例的Neo4j集群如图所示：</p>
-<p><img src="/images/cluster.PNG" alt=""></p>
-<p>上图中的绿色箭头代表的是，每个实例包含所需的逻辑，以便与集群中的其他成员协调以进行数据复制和选举管理。上图中的蓝色箭头代表的是，Slave实例（不包括atbiter实例）和Master实例之间的相互通信，以确保每个每个数据库中的数据都是最新的。</p>
-<h2 id="Neo4j集群的具体搭建过程"><a href="#Neo4j集群的具体搭建过程" class="headerlink" title="Neo4j集群的具体搭建过程"></a>Neo4j集群的具体搭建过程</h2><h3 id="安装环境"><a href="#安装环境" class="headerlink" title="安装环境"></a>安装环境</h3><ul>
-<li>虚拟机系统：UbuntuServer 16.04</li>
-<li>虚拟机配置：内存2G， CPU2P</li>
-<li>Jdk: 1.8</li>
-<li>Neo4j: 3.0.7企业版</li>
-</ul>
-<h3 id="安装步骤"><a href="#安装步骤" class="headerlink" title="安装步骤"></a>安装步骤</h3><p><strong>添加IP和主机名称</strong></p>
-<p>在每个虚拟机上打开hosts文件<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">vi /etc/hosts</div></pre></td></tr></table></figure></p>
-<p>分别在每个虚拟机的配置文件中添加三个虚拟机的IP和名称<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">10.108.217.243 Neo4j-01</div><div class="line">10.108.219.44  Neo4j-02</div><div class="line">10.108.217.230 Neo4j-03</div></pre></td></tr></table></figure></p>
-<p><strong>关闭防火墙(没有的话则不必管)</strong><br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">iptables off</div></pre></td></tr></table></figure></p>
-<p><strong>为每个虚拟机安装Neo4j</strong></p>
-<p>我使用root用户安装的，如果用其他用户安装也可以。</p>
-<p>创建Neo4j的目录<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mkdir /usr/neo4j</div></pre></td></tr></table></figure></p>
-<p>将下载的neo4j-enterprise-3.0.7-unix.tar.gz文件放到刚才的目录中</p>
-<p>解压安装包<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">tar -xf /usr/neo4j/neo4j-enterprise-3.0.7-unix.tar.gz</div><div class="line">rm /usr/neo4j/neo4j-enterprise-3.0.7-unix.tar.gz</div></pre></td></tr></table></figure></p>
-<p>用完解压命令之后解压出的文件夹用户组是nogroup，使用一下命令更改所有者和用户组<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">chown -R root:root /usr/neo4j/neo4j-enterprise3.0.7</div></pre></td></tr></table></figure></p>
-<h3 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h3><p>修改每个虚拟机上的neo4j配置文件<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">vi /usr/neo4j/neo4j-enterprise-3.0.7/conf/neo4j.conf</div></pre></td></tr></table></figure></p>
-<p><img src="/images/conf.png" alt=""></p>
-<p>为个虚拟机的Neo4j配置文件修改图中三个部分：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">Neo4j-01：</div><div class="line"></div><div class="line">ha.mode=HA</div><div class="line">ha.server_id=1</div><div class="line">ha.initial_hosts=IP1:5001,IP2:5001,IP3:5001</div><div class="line"></div><div class="line">Neo4j-02：</div><div class="line"></div><div class="line">ha.mode=HA</div><div class="line">ha.server_id=2</div><div class="line">ha.initial_hosts=IP1:5001,IP2:5001,IP3:5001</div><div class="line"></div><div class="line">Neo4j-03：</div><div class="line"></div><div class="line">ha.mode=HA</div><div class="line">ha.server_id=3</div><div class="line">ha.initial_hosts=IP1:5001,IP2:5001,IP3:5001</div></pre></td></tr></table></figure>
-<h3 id="每个虚拟机启动Neo4j"><a href="#每个虚拟机启动Neo4j" class="headerlink" title="每个虚拟机启动Neo4j"></a>每个虚拟机启动Neo4j</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/usr/neo4j/neo4j-enterprise-3.0.7/bin/neo4j start</div></pre></td></tr></table></figure>
-<p>至此一个具有一个主机两个从机的Neo4j集群就搭建完成了。</p>
-<h2 id="Neo4j集群详细配置"><a href="#Neo4j集群详细配置" class="headerlink" title="Neo4j集群详细配置"></a>Neo4j集群详细配置</h2><ul>
-<li><strong><em>dbms.ha:</em></strong> 数据库的运行模式（<strong>HA/ARBITER</strong>）；</li>
-<li><strong><em>ha.server_id:</em></strong> 集群中每个实例的唯一标识。必须是一个唯一的正整数；</li>
-<li><strong><em>ha.host.coordination:</em></strong> 集群中的每个实例用来监听集群通信的端口，默认5001；</li>
-<li><strong><em>ha.initial_hosts:</em></strong> 当每个实例启动时，帮助他们寻找和加入集群的端口。当集群刚启动时，在所有实例都加入到集群并且可以互相通信之前，这段时间数据库不允许被访问；</li>
-<li><strong><em>ha.host.data:</em></strong> 用来监听集群中从Master提交过来的事物操作，默认为6001。不能与<strong><em>ha.host.coordination</em></strong>相同；</li>
-<li><strong><em>仲裁实例:</em></strong> 仲裁实例不同于Master实例和Slave实例，它工作在仲裁模式，虽然参与集群的通信，但是不复制集群中的数据存储，主要作用是打破Matser选举过程的死结，开启仲裁实例<strong><em>dbms.mode=ARBITER</em></strong></li>
-</ul>
-<h2 id="Master选举"><a href="#Master选举" class="headerlink" title="Master选举"></a>Master选举</h2><h3 id="选举规则"><a href="#选举规则" class="headerlink" title="选举规则"></a>选举规则</h3><ol>
-<li>开启集群时第一个启动的实例就是Master实例。</li>
-<li>如果Master实例因为某种原因宕机，或者是集群冷启动，则Slave实例中提交事务最多的一个将会被选举为Master。</li>
-<li>如果有两个Slave实例提交的事务一样多，那么host_server_id靠前的一个将赢得选举。</li>
-</ol>
-<h3 id="查看当前实例状态"><a href="#查看当前实例状态" class="headerlink" title="查看当前实例状态"></a>查看当前实例状态</h3><p>输入以下命令，如果返回true则是Master实例<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">curl http://&lt;your ip&gt;:7474/db/manage/server/ha/master</div></pre></td></tr></table></figure></p>
-<p>输入以下命令，如果返回true则是Slave实例<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">curl http://&lt;your ip&gt;:7474/db/manage/server/ha/slave</div></pre></td></tr></table></figure></p>
-<p>输入以下命令，如果返回master则是Master实例，返回slave则是Slave实例<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">curl http://&lt;your ip&gt;:7474/db/manage/server/ha/available</div></pre></td></tr></table></figure></p>
-<p>详细情况如下图所示：<br><img src="/images/cluster_status.png" alt=""></p>
-<p>本文结束。</p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1537,7 +1474,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">24</span>
+              <span class="site-state-item-count">25</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -1554,7 +1491,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">30</span>
+                <span class="site-state-item-count">31</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
